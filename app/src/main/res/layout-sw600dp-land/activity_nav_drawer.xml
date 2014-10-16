@@ -6,13 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- As the main content view, the view below consumes the entire
-             space available using match_parent in both dimensions. -->
-        <FrameLayout
-            android:id="@+id/content_frame"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -39,6 +32,13 @@
                 android:textOff="blah2"/>
 
         </RelativeLayout>
+
     </android.support.v4.widget.DrawerLayout>
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="240dp"/>
 
 </merge>
