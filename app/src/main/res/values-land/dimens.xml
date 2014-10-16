@@ -1,0 +1,6 @@
+<resources>
+
+    <!-- Grid Settings -->
+    <integer name="num_columns">2</integer>
+
+</resources>

@@ -3,7 +3,6 @@ package scmu.smarthome.com.smarthome.ui;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -34,12 +33,7 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         Fragment fragment = fm.findFragmentById(R.id.content_frame);
 
         if (fragment == null) {
-            Bundle bundle = new Bundle();
-            bundle.putInt(ExampleFragment.ARGS_POSITION, 0);
-
             fragment = new ExampleFragment();
-            fragment.setArguments(bundle);
-
             fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
         }
     }
@@ -120,11 +114,7 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FragmentManager fm = getFragmentManager();
 
-        Bundle bundle = new Bundle();
-        bundle.putInt(ExampleFragment.ARGS_POSITION, position);
-
         Fragment fragment = new ExampleFragment();
-        fragment.setArguments(bundle);
 
         // Replace fragment and close drawer
         fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
