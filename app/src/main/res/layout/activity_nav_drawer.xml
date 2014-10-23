@@ -34,9 +34,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="20dp"
-                android:layout_marginLeft="50dp"
-                android:textOn="blah1"
-                android:textOff="blah2"/>
+                android:layout_marginLeft="35dp"
+                android:checked="true"
+                android:textOn="@string/drawer_switch_on"
+                android:textOff="@string/drawer_switch_off"/>
 
         </RelativeLayout>
     </android.support.v4.widget.DrawerLayout>

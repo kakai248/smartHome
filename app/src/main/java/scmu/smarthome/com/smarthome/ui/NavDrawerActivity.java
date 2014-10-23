@@ -12,7 +12,9 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 
 import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.adapters.DrawerAdapter;
@@ -21,6 +23,7 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private DrawerAdapter drawerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,19 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         setContentView(R.layout.activity_nav_drawer);
 
         setupNavDrawer();
+
+        // Set switch listener
+        ((Switch) findViewById(R.id.switch1))
+                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked)
+                    switchDrawerItemsList(false);
+                else
+                    switchDrawerItemsList(true);
+            }
+        });
 
         FragmentManager fm = getFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.content_frame);
@@ -43,10 +59,10 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         mDrawerLayout.setFocusableInTouchMode(false);
 
         // Setup menu adapter
-        DrawerAdapter drawerAdapter = new DrawerAdapter(this);
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_1)));
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_2)));
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_3)));
+        drawerAdapter = new DrawerAdapter(this);
+        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_1)));
+        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_2)));
+        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_3)));
 
         ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(drawerAdapter);
@@ -73,6 +89,24 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
         }
+    }
+
+    private void switchDrawerItemsList(boolean showHouseDivisions) {
+        drawerAdapter.clear();
+
+        if(showHouseDivisions) {
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_1)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_2)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_3)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_4)));
+        }
+        else {
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_1)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_2)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_3)));
+        }
+
+        drawerAdapter.notifyDataSetChanged();
     }
 
     @Override
