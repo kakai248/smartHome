@@ -60,9 +60,12 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
 
         // Setup menu adapter
         drawerAdapter = new DrawerAdapter(this);
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_1)));
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_2)));
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_3)));
+        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_1)));
+        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_2)));
+        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_3)));
+        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_4)));
+        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_5)));
+        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_6)));
 
         ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(drawerAdapter);
@@ -99,11 +102,15 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
             drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_2)));
             drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_3)));
             drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_4)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_5)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_6)));
         }
         else {
             drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_1)));
             drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_2)));
             drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_3)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_4)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_5)));
         }
 
         drawerAdapter.notifyDataSetChanged();
@@ -148,7 +155,37 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FragmentManager fm = getFragmentManager();
 
-        Fragment fragment = new ExampleFragment();
+        Fragment fragment = null;
+
+        // Check which mode are we on
+        // type mode
+        if(((Switch) findViewById(R.id.switch1)).isActivated()) {
+            if(position == 0)
+                fragment = new ExampleFragment();
+            else if(position == 1)
+                fragment = new ExampleFragment();
+            else if(position == 2)
+                fragment = new ExampleFragment();
+            else if(position == 3)
+                fragment = new ExampleFragment();
+            else if(position == 4)
+                fragment = new ExampleFragment();
+        }
+        // room mode
+        else {
+            if(position == 0)
+                fragment = new DrawerRoom1Fragment();
+            else if(position == 1)
+                fragment = new ExampleFragment();
+            else if(position == 2)
+                fragment = new ExampleFragment();
+            else if(position == 3)
+                fragment = new ExampleFragment();
+            else if(position == 4)
+                fragment = new ExampleFragment();
+            else if(position == 5)
+                fragment = new ExampleFragment();
+        }
 
         // Replace fragment and close drawer
         fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
