@@ -1,0 +1,19 @@
+{
+	"name": "trabalhoSCMU",
+	"version": "1.0.0",
+	"description": "trabalho SCMU",
+	"main": "index.js",
+	"dependencies": {
+		"express": "^4.10.1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kakai248/trabalhoSCMU.git"
+	},
+	"author": "Miguel Teixeira & Ricardo Carrapiço",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/kakai248/trabalhoSCMU/issues"
+	},
+	"homepage": "https://github.com/kakai248/trabalhoSCMU"
+}
