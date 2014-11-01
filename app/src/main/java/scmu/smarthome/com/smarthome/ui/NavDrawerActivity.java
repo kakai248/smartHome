@@ -25,10 +25,14 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerAdapter drawerAdapter;
 
+    private boolean showHouseDivisions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
+
+        showHouseDivisions = true;
 
         setupNavDrawer();
 
@@ -37,19 +41,24 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
                 .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if(isChecked)
-                    switchDrawerItemsList(false);
-                else
-                    switchDrawerItemsList(true);
+                showHouseDivisions = !isChecked;
+                switchDrawerItemsList();
             }
         });
 
         FragmentManager fm = getFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.content_frame);
 
+        // Sets default fragment (its supposed to be item 0 on list)
         if (fragment == null) {
-            fragment = new ExampleFragment();
+            fragment = new DrawerFragment();
+
+            // tell fragment which adapter to load
+            Bundle args = new Bundle();
+            args.putChar("mode", showHouseDivisions ? 'r' : 't');
+            args.putInt("position", 0);
+            fragment.setArguments(args);
+
             fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
         }
     }
@@ -60,12 +69,7 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
 
         // Setup menu adapter
         drawerAdapter = new DrawerAdapter(this);
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_1)));
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_2)));
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_3)));
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_4)));
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_5)));
-        drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_6)));
+        switchDrawerItemsList();
 
         ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(drawerAdapter);
@@ -94,23 +98,23 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         }
     }
 
-    private void switchDrawerItemsList(boolean showHouseDivisions) {
+    private void switchDrawerItemsList() {
         drawerAdapter.clear();
 
         if(showHouseDivisions) {
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_1)));
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_2)));
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_3)));
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_4)));
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_5)));
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_room_6)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.room_1)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.room_2)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.room_3)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.room_4)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.room_5)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.room_6)));
         }
         else {
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_1)));
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_2)));
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_3)));
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_4)));
-            drawerAdapter.add(new DrawerItem(getString(R.string.drawer_type_5)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.type_1)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.type_2)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.type_3)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.type_4)));
+            drawerAdapter.add(new DrawerItem(getString(R.string.type_5)));
         }
 
         drawerAdapter.notifyDataSetChanged();
@@ -155,36 +159,24 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FragmentManager fm = getFragmentManager();
 
-        Fragment fragment = null;
+        Fragment fragment = new DrawerFragment();
 
         // Check which mode are we on
         // type mode
-        if(((Switch) findViewById(R.id.switch1)).isActivated()) {
-            if(position == 0)
-                fragment = new ExampleFragment();
-            else if(position == 1)
-                fragment = new ExampleFragment();
-            else if(position == 2)
-                fragment = new ExampleFragment();
-            else if(position == 3)
-                fragment = new ExampleFragment();
-            else if(position == 4)
-                fragment = new ExampleFragment();
+        if(showHouseDivisions) {
+            // tell fragment which adapter to load
+            Bundle args = new Bundle();
+            args.putChar("mode", 'r');
+            args.putInt("position", position);
+            fragment.setArguments(args);
         }
         // room mode
         else {
-            if(position == 0)
-                fragment = new DrawerRoom1Fragment();
-            else if(position == 1)
-                fragment = new ExampleFragment();
-            else if(position == 2)
-                fragment = new ExampleFragment();
-            else if(position == 3)
-                fragment = new ExampleFragment();
-            else if(position == 4)
-                fragment = new ExampleFragment();
-            else if(position == 5)
-                fragment = new ExampleFragment();
+            // tell fragment which adapter to load
+            Bundle args = new Bundle();
+            args.putChar("mode", 't');
+            args.putInt("position", position);
+            fragment.setArguments(args);
         }
 
         // Replace fragment and close drawer

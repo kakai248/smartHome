@@ -9,23 +9,19 @@
     <string name="drawer_switch_on">Aparelho</string>
     <string name="drawer_switch_off">Divisão</string>
 
-    <string name="drawer_room_1">Sala</string>
-    <string name="drawer_room_2">Cozinha</string>
-    <string name="drawer_room_3">Quarto 1</string>
-    <string name="drawer_room_4">Quarto 2</string>
-    <string name="drawer_room_5">Casa de banho</string>
-    <string name="drawer_room_6">Hall de entrada</string>
+    <string name="room_1">Sala</string>
+    <string name="room_2">Cozinha</string>
+    <string name="room_3">Quarto 1</string>
+    <string name="room_4">Quarto 2</string>
+    <string name="room_5">Casa de banho</string>
+    <string name="room_6">Hall de entrada</string>
 
-    <string name="drawer_type_1">Luzes</string>
-    <string name="drawer_type_2">Ar Condicionados</string>
-    <string name="drawer_type_3">Televisões</string>
-    <string name="drawer_type_4">Janelas</string>
-    <string name="drawer_type_5">Sistema de som</string>
-
-    <string name="drawer_room_1_lights">Luzes</string>
-    <string name="drawer_room_1_ac">Ar Condicionado</string>
-    <string name="drawer_room_1_tv">Televisão</string>
-    <string name="drawer_room_1_windows">Janelas</string>
-    <string name="drawer_room_1_sound">Sistema de som</string>
+    <string name="type_1">Luzes</string>
+    <string name="type_2">Ar Condicionados</string>
+    <string name="type_2_single">Ar Condicionado</string>
+    <string name="type_3">Televisões</string>
+    <string name="type_3_single">Televisão</string>
+    <string name="type_4">Janelas</string>
+    <string name="type_5">Sistema de som</string>
 
 </resources>
