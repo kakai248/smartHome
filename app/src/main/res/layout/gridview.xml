@@ -6,7 +6,7 @@
     android:columnWidth="90dp"
     android:gravity="center"
     android:horizontalSpacing="10dp"
-    android:padding="10dp"
     android:numColumns="@integer/num_columns"
+    android:padding="10dp"
     android:stretchMode="columnWidth"
     android:verticalSpacing="10dp" />

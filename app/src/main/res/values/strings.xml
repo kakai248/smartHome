@@ -9,6 +9,9 @@
     <string name="drawer_switch_on">Aparelho</string>
     <string name="drawer_switch_off">Divisão</string>
 
+    <string name="title_status">Status</string>
+    <string name="title_volume">Volume</string>
+
     <string name="room_1">Sala</string>
     <string name="room_2">Cozinha</string>
     <string name="room_3">Quarto 1</string>
