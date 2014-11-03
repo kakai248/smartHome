@@ -28,7 +28,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="20dp"
                 android:layout_marginLeft="50dp"
-                android:checked="true"
+                android:checked="false"
                 android:textOn="@string/drawer_switch_on"
                 android:textOff="@string/drawer_switch_off"/>
 
