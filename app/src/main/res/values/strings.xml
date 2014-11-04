@@ -2,14 +2,15 @@
 <resources>
 
     <string name="app_name">Smart Home</string>
-    <string name="menu_place">Where am i?</string>
+    <string name="menu_place">Where am I?</string>
+    <string name="menu_configure">Configurar</string>
 
     <!-- Drawer Settings -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_switch_on">Aparelho</string>
     <string name="drawer_switch_off">Divisão</string>
-    <string name="title_status">Status</string>
+    <string name="title_status">Estado</string>
     <string name="title_volume">Volume</string>
     <string name="room_1">Sala</string>
     <string name="room_2">Cozinha</string>
@@ -27,5 +28,19 @@
     <string name="title_activity_wifi">WifiActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_configure">Configurar</string>
+    <string name="configure_save_button">Guardar</string>
+    <string name="configure_interval">Intervalo:</string>
+    <string name="configure_interval_dbm">dBm</string>
+
+
+    <string-array name="rooms_array">
+        <item>Sala</item>
+        <item>Cozinha</item>
+        <item>Quarto 1</item>
+        <item>Quarto 2</item>
+        <item>Casa de banho</item>
+        <item>Hall de entrada</item>
+    </string-array>
 
 </resources>

@@ -23,6 +23,10 @@
             android:name="scmu.smarthome.com.smarthome.ui.WifiActivity"
             android:label="@string/title_activity_wifi" >
         </activity>
+        <activity
+            android:name="scmu.smarthome.com.smarthome.ui.ConfigureActivity"
+            android:label="@string/title_activity_configure" >
+        </activity>
     </application>
 
 </manifest>

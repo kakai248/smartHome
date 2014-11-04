@@ -202,6 +202,9 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
             case R.id.place :
                 startActivity(new Intent(this, WifiActivity.class));
                 return true;
+            case R.id.configure :
+                startActivity(new Intent(this, ConfigureActivity.class));
+                return true;
             default :
                 return super.onOptionsItemSelected(item);
         }
