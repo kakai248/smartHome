@@ -1,17 +1,20 @@
 package scmu.smarthome.com.smarthome.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -21,17 +24,25 @@ import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.util.Settings;
 
 public class ConfigureActivity extends Activity implements View.OnClickListener {
+    public static final int MAX_SAVED_WIFI = 3;
 
     WifiManager wifi;
     ArrayAdapter<String> wifiAdapter;
+
+    int roomSelected = 1;
+    List<String> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure);
 
-        // set onClickListener to save new interval value
+        // set onClickListener to the buttons
         findViewById(R.id.button_save_interval).setOnClickListener(this);
+        findViewById(R.id.button_save_local).setOnClickListener(this);
+        findViewById(R.id.button_clear_local).setOnClickListener(this);
+        findViewById(R.id.button_info).setOnClickListener(this);
+        findViewById(R.id.button_find_place).setOnClickListener(this);
 
         // if exist, set the dbmInterval value
         String dbmInterval = Settings.getDbmInterval(this);
@@ -44,6 +55,32 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
                 .createFromResource(this, R.array.rooms_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        // set rooms spinner handler
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected = (String) parent.getItemAtPosition(position);
+
+                if(selected.compareTo(getString(R.string.room_1)) == 0)
+                    roomSelected = 1;
+                else if(selected.compareTo(getString(R.string.room_2)) == 0)
+                    roomSelected = 2;
+                else if(selected.compareTo(getString(R.string.room_3)) == 0)
+                    roomSelected = 3;
+                else if(selected.compareTo(getString(R.string.room_4)) == 0)
+                    roomSelected = 4;
+                else if(selected.compareTo(getString(R.string.room_5)) == 0)
+                    roomSelected = 5;
+                else if(selected.compareTo(getString(R.string.room_6)) == 0)
+                    roomSelected = 6;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // shouldnt happen
+            }
+        });
 
         // wifi
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -67,7 +104,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
         wifi.startScan();
 
         // get list of access points found in the scan
-        List<String> list = new LinkedList<String>();
+        list = new LinkedList<String>();
         for(ScanResult result : wifi.getScanResults()) {
             list.add(result.level + " dBm | " + result.SSID);
         }
@@ -82,14 +119,141 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-
        switch (v.getId()) {
            case R.id.button_save_interval :
-               String interval = ((EditText)findViewById(R.id.interval)).getText().toString();
-
-               // save new interval to sharedPreferences
-               Settings.saveDbmInterval(this, interval);
+               saveInterval();
+               break;
+           case R.id.button_save_local :
+               saveRoom();
+               break;
+           case R.id.button_clear_local :
+               clearRoom();
+               break;
+           case R.id.button_info :
+               showRoomInfo();
+               break;
+           case R.id.button_find_place :
+               findPlace();
                break;
        }
+    }
+
+    private void saveInterval() {
+        String interval = ((EditText)findViewById(R.id.interval)).getText().toString();
+
+        // save new interval to sharedPreferences
+        Settings.saveDbmInterval(this, interval);
+
+        Toast.makeText(this, getString(R.string.configure_interval_saved) + " " + interval, Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveRoom() {
+        String local = "";
+
+        for(int i = 0; i < MAX_SAVED_WIFI; i++) {
+            String[] w = list.get(i).split(" dBm | "); // this could be better
+            if(!local.isEmpty())
+                local += ";";
+            local += w[0] + ":" + w[2]; // little hack to fix the bad regex
+        }
+
+        // save new room local to sharedPreferences
+        Settings.saveRoom(this, roomSelected, local);
+
+        Toast.makeText(this, getString(R.string.configure_room_saved) + " " + roomSelected, Toast.LENGTH_SHORT).show();
+    }
+
+    private void clearRoom() {
+        // save new room local to sharedPreferences
+        Settings.saveRoom(this, roomSelected, getString(R.string.configure_no_local_saved));
+
+        Toast.makeText(this, getString(R.string.configure_room_cleared) + " " + roomSelected, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showRoomInfo() {
+        String title = "";
+
+        if(roomSelected == 1)
+            title = getString(R.string.room_1);
+        else if(roomSelected == 2)
+            title = getString(R.string.room_2);
+        else if(roomSelected == 3)
+            title = getString(R.string.room_3);
+        else if(roomSelected == 4)
+            title = getString(R.string.room_4);
+        else if(roomSelected == 5)
+            title = getString(R.string.room_5);
+        else if(roomSelected == 6)
+            title = getString(R.string.room_6);
+
+        String message = Settings.getRoom(this, roomSelected);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle(title);
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    private void findPlace() {
+        // obtain interval for the comparison
+        int interval = Integer.parseInt(Settings.getDbmInterval(this));
+
+        // for each room
+        for(int room = 1; room <= 6; room++) {
+            String roomLocal = Settings.getRoom(this, room);
+
+            // if this local is not saved
+            if(roomLocal.compareTo(getString(R.string.configure_no_local_saved)) == 0)
+                continue;
+
+            boolean matches = true;
+
+            // process each wifi saved for this room
+            String[] roomWifis = roomLocal.split(";");
+            for(String savedWifi : roomWifis) {
+                String[] wifi = savedWifi.split(":");
+
+                boolean exists = false;
+
+                // for each wifi that we're capturing right now
+                for(int i = 0; i < list.size(); i++) {
+                    String[] capturedWifi = list.get(i).split(" dBm | "); // this could be better
+                    int capturedWifiStrength = Integer.parseInt(capturedWifi[0].substring(1));
+                    String capturedWifiName = capturedWifi[2]; // little hack to fix the bad regex
+
+                    // if its not the same ssid we dont bother
+                    if(wifi[1].compareTo(capturedWifiName) != 0) {
+                        continue;
+                    }
+                    exists = true;
+
+                    int strength = Integer.parseInt(wifi[0].substring(1));
+
+                    // if the captured wifi doesnt match the saved wifi strength
+                    if(!(capturedWifiStrength >= strength - interval
+                            && capturedWifiStrength <= strength + interval)) {
+                        matches = false;
+                    }
+                }
+
+                // we didnt find this wifi in this place
+                if(!exists)
+                    break;
+
+                // we found it but the strength was wrong, we must be in the wrong room
+                if(!matches)
+                    break;
+            }
+
+            // we found the place!
+            if(matches) {
+                Toast.makeText(this, getString(R.string.configure_current_local) + " " + room, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        // not a place we have saved
+        Toast.makeText(this, getString(R.string.configure_unknown_place), Toast.LENGTH_SHORT).show();
     }
 }

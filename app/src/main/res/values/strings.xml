@@ -29,9 +29,15 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_configure">Configurar</string>
-    <string name="configure_save_button">Guardar</string>
     <string name="configure_interval">Intervalo:</string>
     <string name="configure_interval_dbm">dBm</string>
+    <string name="configure_interval_saved">Intervalo guardado:</string>
+    <string name="configure_no_local_saved">Não há local guardado para esta divisão</string>
+    <string name="configure_room_saved">Divisão guardada:</string>
+    <string name="configure_room_cleared">Divisão apagada:</string>
+    <string name="configure_find_place_button">Onde estou?</string>
+    <string name="configure_unknown_place">Local desconhecido</string>
+    <string name="configure_current_local">Estamos no local:</string>
 
 
     <string-array name="rooms_array">

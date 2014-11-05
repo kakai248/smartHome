@@ -14,7 +14,7 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.5"/>
+        android:layout_weight="0.4"/>
 
     <View
         android:layout_width="fill_parent"
@@ -24,17 +24,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="30dp"
+            android:paddingTop="15dp"
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/button_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -45,19 +46,27 @@
                 android:layout_width="150dp"
                 android:layout_height="40dp" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_save_local"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/configure_save_button"/>
+                android:src="@android:drawable/ic_menu_save"/>
+
+            <ImageButton
+                android:id="@+id/button_clear_local"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="30dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:orientation="horizontal">
 
             <TextView
@@ -80,14 +89,21 @@
                 android:paddingLeft="5dp"
                 android:text="@string/configure_interval_dbm"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_save_interval"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/configure_save_button"/>
+                android:src="@android:drawable/ic_menu_save"/>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/button_find_place"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/configure_find_place_button"/>
 
     </LinearLayout>
 
