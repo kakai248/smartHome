@@ -58,8 +58,8 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
 
             // tell fragment which adapter to load
             Bundle args = new Bundle();
-            args.putChar("mode", showHouseDivisions ? 'r' : 't');
-            args.putInt("position", 0);
+            args.putString("mode", showHouseDivisions ? "r" : "t");
+            args.putString("position", "0");
             fragment.setArguments(args);
 
             fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -169,16 +169,16 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         if(showHouseDivisions) {
             // tell fragment which adapter to load
             Bundle args = new Bundle();
-            args.putChar("mode", 'r');
-            args.putInt("position", position);
+            args.putString("mode", "r");
+            args.putString("position", String.valueOf(position));
             fragment.setArguments(args);
         }
         // room mode
         else {
             // tell fragment which adapter to load
             Bundle args = new Bundle();
-            args.putChar("mode", 't');
-            args.putInt("position", position);
+            args.putString("mode", "t");
+            args.putString("position", String.valueOf(position));
             fragment.setArguments(args);
         }
 
@@ -199,9 +199,6 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         }
 
         switch (item.getItemId()) {
-            case R.id.place :
-                startActivity(new Intent(this, WifiActivity.class));
-                return true;
             case R.id.configure :
                 startActivity(new Intent(this, ConfigureActivity.class));
                 return true;

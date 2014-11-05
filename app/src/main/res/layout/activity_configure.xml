@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -9,8 +8,7 @@
     android:orientation="vertical"
     android:weightSum="1"
     android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
-    tools:context="scmu.smarthome.com.smarthome.ui.ConfigureActivity">
+    android:focusableInTouchMode="true">
 
     <ListView
         android:id="@+id/listView"
@@ -33,7 +31,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
+            android:paddingTop="30dp"
             android:orientation="horizontal">
 
             <ImageButton
@@ -47,23 +45,29 @@
                 android:layout_width="150dp"
                 android:layout_height="40dp" />
 
+            <Button
+                android:id="@+id/button_save_local"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/configure_save_button"/>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
+            android:paddingTop="30dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
                 android:paddingRight="5dp"
                 android:text="@string/configure_interval"/>
 
             <EditText
+                android:id="@+id/interval"
                 android:layout_width="45dp"
                 android:layout_height="wrap_content"
                 android:digits="1234567890"
@@ -76,13 +80,14 @@
                 android:paddingLeft="5dp"
                 android:text="@string/configure_interval_dbm"/>
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/button_save_interval"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/configure_save_button"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/configure_save_button"/>
+        </LinearLayout>
 
     </LinearLayout>
 

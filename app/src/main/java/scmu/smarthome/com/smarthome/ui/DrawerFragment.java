@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 
 import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.adapters.GridAdapter;
+import scmu.smarthome.com.smarthome.util.GetHomeStatusTask;
 
-public class DrawerFragment extends Fragment {
+public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTaskFinishedListener {
+
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,62 +26,39 @@ public class DrawerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.gridview, container, false);
-        RecyclerView gridView = (RecyclerView) view.findViewById(R.id.gridview);
+        View view = inflater.inflate(R.layout.recycler_view, container, false);
 
         Bundle args = getArguments();
-        char mode = args.getChar("mode", 'r');
-        int position = args.getInt("position", 0);
+        String mode = args.getString("mode", "r");
+        String position = args.getString("position", "0");
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.gridview);
+
+        // set recyclerView StaggeredGridLayout manager
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(
+                getResources().getInteger(R.integer.num_columns),
+                StaggeredGridLayoutManager.VERTICAL));
+
+        // Run AsyncTask
+        GetHomeStatusTask mHomeStatusTask = new GetHomeStatusTask(getActivity(),
+                DrawerFragment.this);
+        mHomeStatusTask.execute(mode, position);
+
+        return view;
+    }
+
+    @Override
+    public void onHomeStatusTaskFinished(String result) {
+        System.out.println("result ::: " + result);
 
         GridAdapter adapter = new GridAdapter(getActivity());
+        adapter.addItem( new GridSwitch(getString(R.string.type_1), false) );
+        adapter.addItem( new GridSwitch(getString(R.string.type_2_single), false) );
+        adapter.addItem( new GridSeekbar(getString(R.string.type_3_single), false, 10) );
+        adapter.addItem( new GridSwitch(getString(R.string.type_4), false) );
+        adapter.addItem( new GridSeekbar(getString(R.string.type_5), false, 20) );
 
-        // type mode
-        if(mode == 'r') {
-            if(position == 0 || position == 1 || position == 2 || position == 3) {
-                adapter.addItem( new GridSwitch(getString(R.string.type_1), false) );
-                adapter.addItem( new GridSwitch(getString(R.string.type_2_single), false) );
-                adapter.addItem( new GridSeekbar(getString(R.string.type_3_single), false, 10) );
-                adapter.addItem( new GridSwitch(getString(R.string.type_4), false) );
-                adapter.addItem( new GridSeekbar(getString(R.string.type_5), false, 20) );
-            }
-            else if(position == 4 || position == 5) {
-                adapter.addItem( new GridSwitch(getString(R.string.type_1), false) );
-                adapter.addItem( new GridSwitch(getString(R.string.type_2_single), false) );
-                adapter.addItem( new GridSwitch(getString(R.string.type_4), false) );
-                adapter.addItem( new GridSeekbar(getString(R.string.type_5), false, 20) );
-            }
-        }
-
-        // room mode
-        else {
-            if(position == 0 || position == 1 || position == 3) {
-                adapter.addItem( new GridSwitch(getString(R.string.room_1), false) );
-                adapter.addItem( new GridSwitch(getString(R.string.room_2), false) );
-                adapter.addItem( new GridSwitch(getString(R.string.room_3), false) );
-                adapter.addItem( new GridSwitch(getString(R.string.room_4), false) );
-                adapter.addItem( new GridSwitch(getString(R.string.room_5), false) );
-                adapter.addItem( new GridSwitch(getString(R.string.room_6), false) );
-            }
-            else if(position == 2) {
-                adapter.addItem( new GridSeekbar(getString(R.string.room_1), false, 20) );
-                adapter.addItem( new GridSeekbar(getString(R.string.room_2), false, 20) );
-                adapter.addItem( new GridSeekbar(getString(R.string.room_3), false, 20) );
-                adapter.addItem( new GridSeekbar(getString(R.string.room_4), false, 20) );
-            }
-            else if(position == 4) {
-                adapter.addItem( new GridSeekbar(getString(R.string.room_1), false, 20) );
-                adapter.addItem( new GridSeekbar(getString(R.string.room_2), false, 20) );
-                adapter.addItem( new GridSeekbar(getString(R.string.room_3), false, 20) );
-                adapter.addItem( new GridSeekbar(getString(R.string.room_4), false, 20) );
-                adapter.addItem( new GridSeekbar(getString(R.string.room_5), false, 20) );
-                adapter.addItem( new GridSeekbar(getString(R.string.room_6), false, 20) );
-            }
-        }
-
-        gridView.setLayoutManager(new StaggeredGridLayoutManager(getResources().getInteger(R.integer.num_columns), StaggeredGridLayoutManager.VERTICAL));
-
-        gridView.setAdapter(adapter);
-        return view;
+        recyclerView.setAdapter(adapter);
     }
 
     public class GridSwitch {

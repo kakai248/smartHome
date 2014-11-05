@@ -36,12 +36,11 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view;
-        if(viewType == VIEW_TYPE_SEEKBAR) {
+        if(viewType == VIEW_TYPE_SEEKBAR)
             view = LayoutInflater.from(mContext).inflate(R.layout.grid_item_seekbar, parent, false);
-        }
-        else {
+        else
             view = LayoutInflater.from(mContext).inflate(R.layout.grid_item_switch, parent, false);
-        }
+
         return new ViewHolder(view);
     }
 
