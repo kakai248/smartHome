@@ -2,16 +2,12 @@ var dataset = require('./dataset.js');
 var express = require('express');
 var app = express();
 
-app.get('/divisions', function (req, res) {
-	res.json(dataset['divisions']);
+// eg. : /livingroom
+app.get('/:room', function (req, res) {
+	var room = req.params.room;
+
+	res.json(dataset['divisions'][room]);
 });
-
-/*app.get('/devices', function (req, res) {
-
-	dataset.getDevicesStatus(function(callback) {
-		res.json(callback);
-	});
-});*/
 
 // eg. : /livingroom/tv/volume/4
 app.get('/:room/:device/:type/:status', function (req, res) {
