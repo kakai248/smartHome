@@ -21,16 +21,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import scmu.smarthome.com.smarthome.R;
+import scmu.smarthome.com.smarthome.entities.WifiHotSpot;
 import scmu.smarthome.com.smarthome.util.Settings;
 
 public class ConfigureActivity extends Activity implements View.OnClickListener {
-    public static final int MAX_SAVED_WIFI = 3;
+    public static final int MAX_SAVED_WIFI = 5;
 
     WifiManager wifi;
     ArrayAdapter<String> wifiAdapter;
 
     int roomSelected = 1;
-    List<String> list;
+    List<WifiHotSpot> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,17 +104,25 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
     public void updateWifiList() {
         wifi.startScan();
 
+        // clear adapter
+        wifiAdapter.clear();
+
         // get list of access points found in the scan
-        list = new LinkedList<String>();
+        list = new LinkedList<WifiHotSpot>();
         for(ScanResult result : wifi.getScanResults()) {
-            list.add(result.level + " dBm | " + result.SSID);
+            WifiHotSpot hotSpot = new WifiHotSpot();
+            hotSpot.setSsid(result.SSID);
+            hotSpot.setLevel(result.level);
+
+            list.add(hotSpot);
+
+            // add item to adapter
+            wifiAdapter.add(hotSpot.toString());
         }
 
         // sort by dBm
         Collections.sort(list);
 
-        wifiAdapter.clear();
-        wifiAdapter.addAll(list);
         wifiAdapter.notifyDataSetChanged();
     }
 
@@ -151,10 +160,11 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
         String local = "";
 
         for(int i = 0; i < MAX_SAVED_WIFI; i++) {
-            String[] w = list.get(i).split(" dBm | "); // this could be better
+            WifiHotSpot item = list.get(i);
             if(!local.isEmpty())
                 local += ";";
-            local += w[0] + ":" + w[2]; // little hack to fix the bad regex
+
+            local += item.toString();
         }
 
         // save new room local to sharedPreferences
@@ -218,9 +228,9 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
 
                 // for each wifi that we're capturing right now
                 for(int i = 0; i < list.size(); i++) {
-                    String[] capturedWifi = list.get(i).split(" dBm | "); // this could be better
-                    int capturedWifiStrength = Integer.parseInt(capturedWifi[0].substring(1));
-                    String capturedWifiName = capturedWifi[2]; // little hack to fix the bad regex
+                    WifiHotSpot item = list.get(i);
+                    int capturedWifiStrength = item.getLevel();
+                    String capturedWifiName = item.getSsid();
 
                     // if its not the same ssid we dont bother
                     if(wifi[1].compareTo(capturedWifiName) != 0) {
