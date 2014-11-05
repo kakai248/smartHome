@@ -1,45 +1,38 @@
 package scmu.smarthome.com.smarthome.entities;
 
-import java.util.Comparator;
+import android.support.annotation.NonNull;
 
 public class WifiHotSpot implements Comparable {
 
     private String ssid;
     private int level;
 
-    public WifiHotSpot(){
-
+    public WifiHotSpot(String ssid, int level){
+        this.ssid = ssid;
+        this.level = level;
     }
 
     public String getSsid() {
         return ssid;
     }
 
-    public void setSsid(String ssid) {
-        this.ssid = ssid;
-    }
-
     public int getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     @Override
     public String toString() {
-        return getLevel() + " : " + getSsid();
+        return getLevel() + " dBm | " + getSsid();
     }
 
     @Override
-    public int compareTo(Object another) {
+    public int compareTo(@NonNull Object another) {
         WifiHotSpot hotSpot = (WifiHotSpot) another;
 
         if(getLevel() > hotSpot.getLevel())
-            return 1;
-        else if(getLevel() < hotSpot.getLevel())
             return -1;
+        else if(getLevel() < hotSpot.getLevel())
+            return 1;
 
         return 0;
     }

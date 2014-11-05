@@ -7,7 +7,6 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,7 +24,7 @@ import scmu.smarthome.com.smarthome.entities.WifiHotSpot;
 import scmu.smarthome.com.smarthome.util.Settings;
 
 public class ConfigureActivity extends Activity implements View.OnClickListener {
-    public static final int MAX_SAVED_WIFI = 5;
+    public static final int MAX_SAVED_WIFI = 3;
 
     WifiManager wifi;
     ArrayAdapter<String> wifiAdapter;
@@ -110,18 +109,16 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
         // get list of access points found in the scan
         list = new LinkedList<WifiHotSpot>();
         for(ScanResult result : wifi.getScanResults()) {
-            WifiHotSpot hotSpot = new WifiHotSpot();
-            hotSpot.setSsid(result.SSID);
-            hotSpot.setLevel(result.level);
-
+            WifiHotSpot hotSpot = new WifiHotSpot(result.SSID, result.level);
             list.add(hotSpot);
-
-            // add item to adapter
-            wifiAdapter.add(hotSpot.toString());
         }
 
         // sort by dBm
         Collections.sort(list);
+
+        // add items to adapter
+        for(WifiHotSpot hotSpot : list)
+            wifiAdapter.add(hotSpot.toString());
 
         wifiAdapter.notifyDataSetChanged();
     }
@@ -164,7 +161,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
             if(!local.isEmpty())
                 local += ";";
 
-            local += item.toString();
+            local += item.getLevel() + ":" + item.getSsid();
         }
 
         // save new room local to sharedPreferences
@@ -219,6 +216,8 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
 
             boolean matches = true;
 
+            System.out.println("----- Room: " + room);
+
             // process each wifi saved for this room
             String[] roomWifis = roomLocal.split(";");
             for(String savedWifi : roomWifis) {
@@ -226,9 +225,10 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
 
                 boolean exists = false;
 
+                System.out.println("----- savedWifi: " + savedWifi);
+
                 // for each wifi that we're capturing right now
-                for(int i = 0; i < list.size(); i++) {
-                    WifiHotSpot item = list.get(i);
+                for(WifiHotSpot item : list) {
                     int capturedWifiStrength = item.getLevel();
                     String capturedWifiName = item.getSsid();
 
@@ -238,18 +238,23 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
                     }
                     exists = true;
 
-                    int strength = Integer.parseInt(wifi[0].substring(1));
+                    System.out.println("----- Captured wifi: " + capturedWifiName + " - " + capturedWifiStrength);
+
+                    int strength = Integer.parseInt(wifi[0]);
 
                     // if the captured wifi doesnt match the saved wifi strength
                     if(!(capturedWifiStrength >= strength - interval
                             && capturedWifiStrength <= strength + interval)) {
                         matches = false;
                     }
+                    break;
                 }
 
                 // we didnt find this wifi in this place
-                if(!exists)
+                if(!exists) {
+                    matches = false;
                     break;
+                }
 
                 // we found it but the strength was wrong, we must be in the wrong room
                 if(!matches)
