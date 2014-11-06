@@ -5,15 +5,21 @@ import android.support.annotation.NonNull;
 public class WifiHotSpot implements Comparable {
 
     private String ssid;
+    private String mac;
     private int level;
 
-    public WifiHotSpot(String ssid, int level){
+    public WifiHotSpot(String ssid, String mac, int level){
         this.ssid = ssid;
+        this.mac = mac;
         this.level = level;
     }
 
     public String getSsid() {
         return ssid;
+    }
+
+    public String getMac() {
+        return mac;
     }
 
     public int getLevel() {

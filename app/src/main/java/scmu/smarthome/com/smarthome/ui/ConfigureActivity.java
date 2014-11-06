@@ -109,7 +109,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
         // get list of access points found in the scan
         list = new LinkedList<WifiHotSpot>();
         for(ScanResult result : wifi.getScanResults()) {
-            WifiHotSpot hotSpot = new WifiHotSpot(result.SSID, result.level);
+            WifiHotSpot hotSpot = new WifiHotSpot(result.SSID, result.BSSID, result.level);
             list.add(hotSpot);
         }
 
@@ -156,12 +156,12 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
     private void saveRoom() {
         String local = "";
 
-        for(int i = 0; i < MAX_SAVED_WIFI; i++) {
+        for(int i = 0; i < Math.min(MAX_SAVED_WIFI, list.size()); i++) {
             WifiHotSpot item = list.get(i);
             if(!local.isEmpty())
                 local += ";";
 
-            local += item.getLevel() + ":" + item.getSsid();
+            local += item.getLevel() + "#" + item.getMac();
         }
 
         // save new room local to sharedPreferences
@@ -221,7 +221,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
             // process each wifi saved for this room
             String[] roomWifis = roomLocal.split(";");
             for(String savedWifi : roomWifis) {
-                String[] wifi = savedWifi.split(":");
+                String[] wifi = savedWifi.split("#");
 
                 boolean exists = false;
 
@@ -230,15 +230,15 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
                 // for each wifi that we're capturing right now
                 for(WifiHotSpot item : list) {
                     int capturedWifiStrength = item.getLevel();
-                    String capturedWifiName = item.getSsid();
+                    String capturedWifiMac = item.getMac();
 
                     // if its not the same ssid we dont bother
-                    if(wifi[1].compareTo(capturedWifiName) != 0) {
+                    if(wifi[1].compareTo(capturedWifiMac) != 0) {
                         continue;
                     }
                     exists = true;
 
-                    System.out.println("----- Captured wifi: " + capturedWifiName + " - " + capturedWifiStrength);
+                    System.out.println("----- Captured wifi: " + capturedWifiMac + " - " + capturedWifiStrength);
 
                     int strength = Integer.parseInt(wifi[0]);
 
