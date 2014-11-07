@@ -2,11 +2,34 @@ var dataset = require('./dataset.js');
 var express = require('express');
 var app = express();
 
-// eg. : /livingroom
-app.get('/:room', function (req, res) {
-	var room = req.params.room;
+// eg. : /livingroom or /light
+app.get('/:roomOrDevice', function (req, res) {
+	var roomOrDevice = req.params.roomOrDevice;
 
-	res.json(dataset['divisions'][room]);
+	// it it's a division
+	if(roomOrDevice === "livingroom" || roomOrDevice === "kitchen" ||
+		roomOrDevice === "room1" || roomOrDevice === "room2" ||
+		roomOrDevice === "bathroom" || roomOrDevice === "hall") {
+	
+		res.json(dataset['divisions'][roomOrDevice]);
+	}
+
+	// if it's a device
+	else {
+		var devices = [];
+		var divisions = dataset['divisions'];
+
+		for (key in divisions) {
+			var name = divisions[key]["name"];
+			var device = divisions[key][roomOrDevice];
+
+			var division = { "name" : name, roomOrDevice : device};
+			devices.push(division);
+		}
+
+		res.json(devices);
+	}
+
 });
 
 // eg. : /livingroom/tv/volume/4

@@ -3,6 +3,7 @@ function Dataset() {
 	this.divisions = {
 
 		"livingroom" : {
+			"name" : "Sala de Estar",
 
 			"light" : {
 				"status" : false
@@ -28,6 +29,7 @@ function Dataset() {
 		},
 
 		"kitchen" : {
+			"name" : "Cozinha",
 
 			"light" : {
 				"status" : false
@@ -53,6 +55,7 @@ function Dataset() {
 		},
 
 		"room1" : {
+			"name" : "Quarto 1",
 
 			"light" : {
 				"status" : false
@@ -74,6 +77,7 @@ function Dataset() {
 		},
 
 		"room2" : {
+			"name" : "Quarto 2",
 
 			"light" : {
 				"status" : false
@@ -99,6 +103,7 @@ function Dataset() {
 		},
 
 		"bathroom" : {
+			"name" : "Casa de Banho",
 
 			"light" : {
 				"status" : false
@@ -115,6 +120,7 @@ function Dataset() {
 		},
 
 		"hall" : {
+			"name" : "Hall de Entrada",
 
 			"light" : {
 				"status" : false
