@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -47,10 +48,33 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         viewHolder.title.setText(mItems.get(position).mTitle);
+
         viewHolder.status.setChecked(mItems.get(position).mStatus);
+        viewHolder.status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                System.out.println("status -> " + isChecked);
+            }
+        });
 
         if(getItemViewType(position) == VIEW_TYPE_SEEKBAR) {
             viewHolder.seekBar.setProgress(((DrawerFragment.GridSeekbar)mItems.get(position)).mVolume);
+            viewHolder.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    System.out.println("seekbar -> " + progress);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    //
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    //
+                }
+            });
         }
     }
 

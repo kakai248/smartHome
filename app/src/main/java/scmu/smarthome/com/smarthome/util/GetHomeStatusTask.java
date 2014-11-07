@@ -34,8 +34,6 @@ public class GetHomeStatusTask extends AsyncTask<String, Void, Device> {
         String roomSelected = params[0];
         final String URL = "http://195.154.70.147:3000/" + roomSelected;
 
-        System.out.println("room: " + roomSelected);
-
         // make the HTTP request
         Request request = new Request.Builder()
                 .url(URL)

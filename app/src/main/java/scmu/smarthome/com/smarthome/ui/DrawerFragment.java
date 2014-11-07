@@ -51,16 +51,20 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
 
     @Override
     public void onHomeStatusTaskFinished(Device result) {
-        System.out.println("result ::: " + result);
-
         GridAdapter adapter = new GridAdapter(getActivity());
         adapter.addItem( new GridSwitch(getString(R.string.type_1), result.light.status) );
 
-        /*adapter.addItem( new GridSwitch(getString(R.string.type_1), false) );
-        adapter.addItem( new GridSwitch(getString(R.string.type_2_single), false) );
-        adapter.addItem( new GridSeekbar(getString(R.string.type_3_single), false, 10) );
-        adapter.addItem( new GridSwitch(getString(R.string.type_4), false) );
-        adapter.addItem( new GridSeekbar(getString(R.string.type_5), false, 20) );*/
+        if(result.airconditioner != null)
+            adapter.addItem( new GridSwitch(getString(R.string.type_2_single), result.airconditioner.status) );
+
+        if(result.tv != null)
+            adapter.addItem( new GridSeekbar(getString(R.string.type_3_single), result.tv.status, result.tv.volume) );
+
+        if(result.windows != null)
+            adapter.addItem( new GridSwitch(getString(R.string.type_4), result.windows.status) );
+
+        if(result.soundsystem != null)
+            adapter.addItem( new GridSeekbar(getString(R.string.type_5), result.soundsystem.status, result.soundsystem.volume) );
 
         recyclerView.setAdapter(adapter);
     }

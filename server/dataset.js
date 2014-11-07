@@ -67,10 +67,6 @@ function Dataset() {
 				"volume" : 0
 			},
 
-			"windows" : {
-				"status" : false
-			},
-
 			"soundsystem" : {
 				"status" : false,
 				"volume" : 0
@@ -105,10 +101,6 @@ function Dataset() {
 		"bathroom" : {
 
 			"light" : {
-				"status" : false
-			},
-
-			"airconditioner" : {
 				"status" : false
 			},
 
