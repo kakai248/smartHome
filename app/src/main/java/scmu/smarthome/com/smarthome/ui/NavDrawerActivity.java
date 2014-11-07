@@ -56,10 +56,11 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         if (fragment == null) {
             fragment = new DrawerFragment();
 
-            // tell fragment which adapter to load
+            // Get room selected
+            String roomSelected = getResources().getStringArray(R.array.json_rooms_array)[0];
+
             Bundle args = new Bundle();
-            args.putString("mode", showHouseDivisions ? "r" : "t");
-            args.putString("position", "0");
+            args.putString("room_selected", roomSelected);
             fragment.setArguments(args);
 
             fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -161,26 +162,14 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FragmentManager fm = getFragmentManager();
-
         Fragment fragment = new DrawerFragment();
 
-        // Check which mode are we on
-        // type mode
-        if(showHouseDivisions) {
-            // tell fragment which adapter to load
-            Bundle args = new Bundle();
-            args.putString("mode", "r");
-            args.putString("position", String.valueOf(position));
-            fragment.setArguments(args);
-        }
-        // room mode
-        else {
-            // tell fragment which adapter to load
-            Bundle args = new Bundle();
-            args.putString("mode", "t");
-            args.putString("position", String.valueOf(position));
-            fragment.setArguments(args);
-        }
+        // Get room selected
+        String roomSelected = getResources().getStringArray(R.array.json_rooms_array)[position];
+
+        Bundle args = new Bundle();
+        args.putString("room_selected", roomSelected);
+        fragment.setArguments(args);
 
         // Replace fragment and close drawer
         fm.beginTransaction().replace(R.id.content_frame, fragment).commit();

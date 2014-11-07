@@ -10,14 +10,17 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_switch_on">Aparelho</string>
     <string name="drawer_switch_off">Divisão</string>
+
     <string name="title_status">Estado</string>
     <string name="title_volume">Volume</string>
+
     <string name="room_1">Sala</string>
     <string name="room_2">Cozinha</string>
     <string name="room_3">Quarto 1</string>
     <string name="room_4">Quarto 2</string>
     <string name="room_5">Casa de banho</string>
     <string name="room_6">Hall de entrada</string>
+
     <string name="type_1">Luzes</string>
     <string name="type_2">Ar Condicionados</string>
     <string name="type_2_single">Ar Condicionado</string>
@@ -25,6 +28,7 @@
     <string name="type_3_single">Televisão</string>
     <string name="type_4">Janelas</string>
     <string name="type_5">Sistema de som</string>
+
     <string name="title_activity_wifi">WifiActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -39,14 +43,23 @@
     <string name="configure_unknown_place">Local desconhecido</string>
     <string name="configure_current_local">Estamos no local:</string>
 
-
     <string-array name="rooms_array">
-        <item>Sala</item>
-        <item>Cozinha</item>
-        <item>Quarto 1</item>
-        <item>Quarto 2</item>
-        <item>Casa de banho</item>
-        <item>Hall de entrada</item>
+        <item>@string/room_1</item>
+        <item>@string/room_2</item>
+        <item>@string/room_3</item>
+        <item>@string/room_4</item>
+        <item>@string/room_5</item>
+        <item>@string/room_6</item>
+    </string-array>
+
+    <!-- Json helper -->
+    <string-array name="json_rooms_array">
+        <item>livingroom</item>
+        <item>kitchen</item>
+        <item>room1</item>
+        <item>room2</item>
+        <item>bathroom</item>
+        <item>hall</item>
     </string-array>
 
 </resources>

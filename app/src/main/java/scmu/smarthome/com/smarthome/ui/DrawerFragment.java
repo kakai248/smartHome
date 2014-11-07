@@ -10,15 +10,21 @@ import android.view.ViewGroup;
 
 import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.adapters.GridAdapter;
+import scmu.smarthome.com.smarthome.entities.Device;
+import scmu.smarthome.com.smarthome.entities.Division;
 import scmu.smarthome.com.smarthome.util.GetHomeStatusTask;
 
 public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTaskFinishedListener {
 
     private RecyclerView recyclerView;
+    private String roomSelected;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle args = getArguments();
+        roomSelected = args.getString("room_selected", "livingroom");
 
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
@@ -27,10 +33,6 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recycler_view, container, false);
-
-        Bundle args = getArguments();
-        String mode = args.getString("mode", "r");
-        String position = args.getString("position", "0");
 
         recyclerView = (RecyclerView) view.findViewById(R.id.gridview);
 
@@ -42,21 +44,23 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
         // Run AsyncTask
         GetHomeStatusTask mHomeStatusTask = new GetHomeStatusTask(getActivity(),
                 DrawerFragment.this);
-        mHomeStatusTask.execute(mode, position);
+        mHomeStatusTask.execute(roomSelected);
 
         return view;
     }
 
     @Override
-    public void onHomeStatusTaskFinished(String result) {
+    public void onHomeStatusTaskFinished(Device result) {
         System.out.println("result ::: " + result);
 
         GridAdapter adapter = new GridAdapter(getActivity());
-        adapter.addItem( new GridSwitch(getString(R.string.type_1), false) );
+        adapter.addItem( new GridSwitch(getString(R.string.type_1), result.light.status) );
+
+        /*adapter.addItem( new GridSwitch(getString(R.string.type_1), false) );
         adapter.addItem( new GridSwitch(getString(R.string.type_2_single), false) );
         adapter.addItem( new GridSeekbar(getString(R.string.type_3_single), false, 10) );
         adapter.addItem( new GridSwitch(getString(R.string.type_4), false) );
-        adapter.addItem( new GridSeekbar(getString(R.string.type_5), false, 20) );
+        adapter.addItem( new GridSeekbar(getString(R.string.type_5), false, 20) );*/
 
         recyclerView.setAdapter(adapter);
     }

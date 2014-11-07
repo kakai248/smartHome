@@ -16,6 +16,13 @@ app.get('/:room/:device/:type/:status', function (req, res) {
 	var type = req.params.type;
 	var status = req.params.status;
 
+	if(status === "true")
+		status = true;
+	else if(status === "false")
+		status = false;
+	else
+		status = parseInt(status); // status is an integer
+
 	dataset['divisions'][room][device][type] = status;
 
 	res.json({ success : true });

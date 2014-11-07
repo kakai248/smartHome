@@ -5,140 +5,140 @@ function Dataset() {
 		"livingroom" : {
 
 			"light" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"airconditioner" : {
-				"status" : "off"
+				"status" : false
 			},	
 
 			"tv" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			},
 
 			"windows" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"soundsystem" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			}
 		},
 
 		"kitchen" : {
 
 			"light" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"airconditioner" : {
-				"status" : "off"
+				"status" : false
 			},	
 
 			"tv" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			},
 
 			"windows" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"soundsystem" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			}
 		},
 
 		"room1" : {
 
 			"light" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"airconditioner" : {
-				"status" : "off"
+				"status" : false
 			},	
 
 			"tv" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			},
 
 			"windows" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"soundsystem" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			}
 		},
 
 		"room2" : {
 
 			"light" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"airconditioner" : {
-				"status" : "off"
+				"status" : false
 			},	
 
 			"tv" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			},
 
 			"windows" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"soundsystem" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			}
 		},
 
 		"bathroom" : {
 
 			"light" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"airconditioner" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"windows" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"soundsystem" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			}
 		},
 
 		"hall" : {
 
 			"light" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"airconditioner" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"windows" : {
-				"status" : "off"
+				"status" : false
 			},
 
 			"soundsystem" : {
-				"status" : "off",
-				"volume" : "0"
+				"status" : false,
+				"volume" : 0
 			}
 		}
 		
