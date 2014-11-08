@@ -62,4 +62,12 @@
         <item>hall</item>
     </string-array>
 
+    <string-array name="json_devices_array">
+        <item>light</item>
+        <item>airconditioner</item>
+        <item>tv</item>
+        <item>windows</item>
+        <item>soundsystem</item>
+    </string-array>
+
 </resources>

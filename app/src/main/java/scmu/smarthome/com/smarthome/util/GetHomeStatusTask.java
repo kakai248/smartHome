@@ -7,18 +7,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
-import scmu.smarthome.com.smarthome.entities.Device;
 import scmu.smarthome.com.smarthome.entities.Division;
 
-public class GetHomeStatusTask extends AsyncTask<String, Void, Device> {
+public class GetHomeStatusTask extends AsyncTask<Object, Void, Object> {
 
     public interface OnTaskFinishedListener {
 
-        public void onHomeStatusTaskFinished(Device result);
+        public void onHomeStatusTaskFinished(Object result);
     }
 
     private Context mContext;
@@ -30,9 +28,11 @@ public class GetHomeStatusTask extends AsyncTask<String, Void, Device> {
     }
 
     @Override
-    protected Device doInBackground(String... params) {
-        String roomSelected = params[0];
-        final String URL = "http://195.154.70.147:3000/" + roomSelected;
+    protected Object doInBackground(Object... params) {
+        String selectedItem = (String) params[0];
+        Boolean showDivisions = (Boolean) params[1];
+
+        final String URL = "http://195.154.70.147:3000/" + selectedItem;
 
         // make the HTTP request
         Request request = new Request.Builder()
@@ -49,11 +49,15 @@ public class GetHomeStatusTask extends AsyncTask<String, Void, Device> {
 
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        return gson.fromJson(response, Device.class);
+
+        if(showDivisions)
+            return gson.fromJson(response, Division.class);
+        else
+            return gson.fromJson(response, Division[].class);
     }
 
     @Override
-    protected void onPostExecute(Device result) {
+    protected void onPostExecute(Object result) {
         super.onPostExecute(result);
 
         if (mListener != null) {

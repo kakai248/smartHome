@@ -55,14 +55,23 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         // Sets default fragment (its supposed to be item 0 on list)
         if (fragment == null) {
             fragment = new DrawerFragment();
-
-            // Get room selected
-            String roomSelected = getResources().getStringArray(R.array.json_rooms_array)[0];
-
             Bundle args = new Bundle();
-            args.putString("room_selected", roomSelected);
-            fragment.setArguments(args);
 
+            if(showHouseDivisions) {
+                // Get selected room
+                String selectedRoom = getResources().getStringArray(R.array.json_rooms_array)[0];
+
+                args.putString("item_selected", selectedRoom);
+            }
+            else {
+                // Get selected device
+                String selectedDevice = getResources().getStringArray(R.array.json_devices_array)[0];
+
+                args.putString("item_selected", selectedDevice);
+            }
+
+            args.putBoolean("show_divisions", showHouseDivisions);
+            fragment.setArguments(args);
             fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
         }
     }
@@ -164,11 +173,21 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         FragmentManager fm = getFragmentManager();
         Fragment fragment = new DrawerFragment();
 
-        // Get room selected
-        String roomSelected = getResources().getStringArray(R.array.json_rooms_array)[position];
-
         Bundle args = new Bundle();
-        args.putString("room_selected", roomSelected);
+        if(showHouseDivisions) {
+            // Get selected room
+            String selectedRoom = getResources().getStringArray(R.array.json_rooms_array)[position];
+
+            args.putString("item_selected", selectedRoom);
+        }
+        else {
+            // Get selected device
+            String selectedDevice = getResources().getStringArray(R.array.json_devices_array)[position];
+
+            args.putString("item_selected", selectedDevice);
+        }
+
+        args.putBoolean("show_divisions", showHouseDivisions);
         fragment.setArguments(args);
 
         // Replace fragment and close drawer

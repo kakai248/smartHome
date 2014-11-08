@@ -1,37 +1,25 @@
 package scmu.smarthome.com.smarthome.entities;
 
-import scmu.smarthome.com.smarthome.entities.Device.Light;
-import scmu.smarthome.com.smarthome.entities.Device.AirConditioner;
-import scmu.smarthome.com.smarthome.entities.Device.Windows;
-import scmu.smarthome.com.smarthome.entities.Device.Tv;
-import scmu.smarthome.com.smarthome.entities.Device.SoundSystem;
-
 public class Division {
-    public LivingRoom livingRoom;
-    public Kitchen kitchen;
-    public Room1 room1;
-    public Room2 room2;
-    public BathRoom bathRoom;
-    public Hall hall;
+    public String name;
+    public Light light;
+    public AirConditioner airconditioner;
+    public Tv tv;
+    public Windows windows;
+    public SoundSystem soundsystem;
 
-    private abstract static class DivisionEntity {
-        public String name;
-        public Tv tv;
-        public Light light;
-        public AirConditioner airconditioner;
-        public Windows windows;
-        public SoundSystem soundsystem;
+    private static class DeviceEntity {
+        public boolean status;
+        public int volume;
     }
 
-    public class LivingRoom extends DivisionEntity {}
+    public class Light extends DeviceEntity {}
 
-    public class Kitchen extends DivisionEntity {}
+    public class AirConditioner extends DeviceEntity {}
 
-    public class Room1 extends DivisionEntity {}
+    public class Tv extends DeviceEntity {}
 
-    public class Room2 extends DivisionEntity {}
+    public class Windows extends DeviceEntity {}
 
-    public class BathRoom extends DivisionEntity {}
-
-    public class Hall extends DivisionEntity {}
+    public class SoundSystem extends DeviceEntity {}
 }
