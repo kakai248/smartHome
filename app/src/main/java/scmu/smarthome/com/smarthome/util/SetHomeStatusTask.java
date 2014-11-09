@@ -1,6 +1,7 @@
 package scmu.smarthome.com.smarthome.util;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,9 +10,9 @@ import com.squareup.okhttp.Request;
 
 import java.io.IOException;
 
-import scmu.smarthome.com.smarthome.entities.Division;
+import scmu.smarthome.com.smarthome.entities.PostResponse;
 
-public class GetHomeStatusTask extends AsyncTask<Object, Void, Object> {
+public class SetHomeStatusTask extends AsyncTask<Object, Void, Object> {
 
     public interface OnTaskFinishedListener {
 
@@ -20,16 +21,21 @@ public class GetHomeStatusTask extends AsyncTask<Object, Void, Object> {
 
     private OnTaskFinishedListener mListener;
 
-    public GetHomeStatusTask(OnTaskFinishedListener listener) {
+    public SetHomeStatusTask(OnTaskFinishedListener listener) {
         mListener = listener;
     }
 
     @Override
     protected Object doInBackground(Object... params) {
         String selectedItem = (String) params[0];
-        Boolean showDivisions = (Boolean) params[1];
+        String device = (String) params[1];
+        String type = (String) params[2];
+        String status = (String) params[3];
 
-        final String URL = "http://195.154.70.147:3000/" + selectedItem;
+        final String URL = "http://195.154.70.147:3000/" + selectedItem +
+                                                     "/" + device +
+                                                     "/" + type +
+                                                     "/" + status;
 
         // make the HTTP request
         Request request = new Request.Builder()
@@ -47,10 +53,7 @@ public class GetHomeStatusTask extends AsyncTask<Object, Void, Object> {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        if(showDivisions)
-            return gson.fromJson(response, Division.class);
-        else
-            return gson.fromJson(response, Division[].class);
+        return gson.fromJson(response, PostResponse.class);
     }
 
     @Override

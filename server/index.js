@@ -24,6 +24,7 @@ app.get('/:roomOrDevice', function (req, res) {
 			var device = divisions[key][roomOrDevice];
 
 			var division = {};
+			division["division"] = key;
 			division["name"] = name;
 			division[roomOrDevice] = device;
 			
