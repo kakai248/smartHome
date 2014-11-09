@@ -58,27 +58,27 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
 
             if(division.light != null)
                 adapter.addItem( new GridSwitch(selectedItem,
-                        getResources().getStringArray(R.array.json_devices_array)[0],
+                        getActivity().getResources().getStringArray(R.array.json_devices_array)[0],
                         getString(R.string.type_1), division.light.status) );
 
             if(division.airconditioner != null)
                 adapter.addItem( new GridSwitch(selectedItem,
-                        getResources().getStringArray(R.array.json_devices_array)[1],
+                        getActivity().getResources().getStringArray(R.array.json_devices_array)[1],
                         getString(R.string.type_2_single), division.airconditioner.status) );
 
             if(division.tv != null)
                 adapter.addItem( new GridSeekbar(selectedItem,
-                        getResources().getStringArray(R.array.json_devices_array)[2],
+                        getActivity().getResources().getStringArray(R.array.json_devices_array)[2],
                         getString(R.string.type_3_single), division.tv.status, division.tv.volume) );
 
             if(division.windows != null)
                 adapter.addItem( new GridSwitch(selectedItem,
-                        getResources().getStringArray(R.array.json_devices_array)[3],
+                        getActivity().getResources().getStringArray(R.array.json_devices_array)[3],
                         getString(R.string.type_4), division.windows.status) );
 
             if(division.soundsystem != null)
                 adapter.addItem( new GridSeekbar(selectedItem,
-                        getResources().getStringArray(R.array.json_devices_array)[4],
+                        getActivity().getResources().getStringArray(R.array.json_devices_array)[4],
                         getString(R.string.type_5), division.soundsystem.status, division.soundsystem.volume) );
         }
         else {
@@ -88,31 +88,31 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
 
                 if(division.light != null)
                     adapter.addItem( new GridSwitch(division.division,
-                            getResources().getStringArray(R.array.json_devices_array)[0],
+                            getActivity().getResources().getStringArray(R.array.json_devices_array)[0],
                             getString(R.string.type_1) + " - " + division.name,
                             division.light.status) );
 
                 if(division.airconditioner != null)
                     adapter.addItem( new GridSwitch(division.division,
-                            getResources().getStringArray(R.array.json_devices_array)[1],
+                            getActivity().getResources().getStringArray(R.array.json_devices_array)[1],
                             getString(R.string.type_2_single) + " - " + division.name,
                             division.airconditioner.status) );
 
                 if(division.tv != null)
                     adapter.addItem( new GridSeekbar(division.division,
-                            getResources().getStringArray(R.array.json_devices_array)[2],
+                            getActivity().getResources().getStringArray(R.array.json_devices_array)[2],
                             getString(R.string.type_3_single) + " - " + division.name,
                             division.tv.status, division.tv.volume) );
 
                 if(division.windows != null)
                     adapter.addItem( new GridSwitch(division.division,
-                            getResources().getStringArray(R.array.json_devices_array)[3],
+                            getActivity().getResources().getStringArray(R.array.json_devices_array)[3],
                             getString(R.string.type_4) + " - " + division.name,
                             division.windows.status) );
 
                 if(division.soundsystem != null)
                     adapter.addItem( new GridSeekbar(division.division,
-                            getResources().getStringArray(R.array.json_devices_array)[4],
+                            getActivity().getResources().getStringArray(R.array.json_devices_array)[4],
                             getString(R.string.type_5) + " - " + division.name,
                             division.soundsystem.status, division.soundsystem.volume) );
             }
