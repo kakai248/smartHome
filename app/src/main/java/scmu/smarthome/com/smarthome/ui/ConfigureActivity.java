@@ -1,10 +1,6 @@
 package scmu.smarthome.com.smarthome.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -13,10 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import scmu.smarthome.com.smarthome.R;
@@ -115,7 +108,7 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
     public void onClick(View v) {
        switch (v.getId()) {
            case R.id.button_save_interval :
-               Utils.saveInterval(this, v);
+               Utils.saveInterval(this);
                break;
            case R.id.button_save_local :
                Utils.saveRoom(this, list, roomSelected);

@@ -1,10 +1,10 @@
 package scmu.smarthome.com.smarthome.util;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,8 +34,8 @@ public class Utils {
         return list;
     }
 
-    public static void saveInterval(Context context, View view) {
-        String interval = ((EditText) view.findViewById(R.id.interval)).getText().toString();
+    public static void saveInterval(Context context) {
+        String interval = ((EditText) ((Activity)context).findViewById(R.id.interval)).getText().toString();
 
         // save new interval to sharedPreferences
         Settings.saveDbmInterval(context, interval);
@@ -59,8 +59,10 @@ public class Utils {
         // save new room local to sharedPreferences
         Settings.saveRoom(context, roomSelected, local);
 
+        String roomName = context.getResources().getStringArray(R.array.rooms_array)[roomSelected];
+
         Toast.makeText(context, context.getString(R.string.configure_room_saved) +
-                " " + roomSelected, Toast.LENGTH_SHORT).show();
+                " " + roomName, Toast.LENGTH_SHORT).show();
     }
 
     public static void clearRoom(Context context, int roomSelected) {
