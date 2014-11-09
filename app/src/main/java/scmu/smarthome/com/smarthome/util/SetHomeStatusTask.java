@@ -1,10 +1,6 @@
 package scmu.smarthome.com.smarthome.util;
 
 import android.os.AsyncTask;
-<<<<<<< HEAD
-import android.util.Log;
-=======
->>>>>>> origin/master
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
