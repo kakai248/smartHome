@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import android.widget.Switch;
 
 import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.adapters.DrawerAdapter;
+import scmu.smarthome.com.smarthome.util.Utils;
 
 public class NavDrawerActivity extends Activity implements AdapterView.OnItemClickListener {
 
@@ -29,6 +31,8 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     private DrawerAdapter drawerAdapter;
 
     private boolean showHouseDivisions;
+    private ListView mDrawerList;
+    private Switch switch1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,8 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         setupNavDrawer();
 
         // Set switch listener
-        ((Switch) findViewById(R.id.switch1))
-                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        switch1 = (Switch) findViewById(R.id.switch1);
+        switch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 showHouseDivisions = !isChecked;
@@ -84,8 +88,9 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         drawerAdapter = new DrawerAdapter(this);
         switchDrawerItemsList();
 
-        ListView mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(drawerAdapter);
+        mDrawerList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         mDrawerList.setItemChecked(0, true);
         mDrawerList.setOnItemClickListener(this);
 
@@ -207,9 +212,26 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         }
 
         switch (item.getItemId()) {
+            case R.id.myPlace :
+                int place = Utils.getPlace(this, Utils.getWifiList(this));
+
+                if(place != -1) {
+
+                    if(switch1.isChecked())
+                        switch1.setChecked(false);
+
+                    mDrawerList.performItemClick(
+                            mDrawerList.getChildAt(place),
+                            place,
+                            mDrawerList.getAdapter().getItemId(place));
+                }
+
+                return true;
+
             case R.id.configure :
                 startActivity(new Intent(this, ConfigureActivity.class));
                 return true;
+
             default :
                 return super.onOptionsItemSelected(item);
         }

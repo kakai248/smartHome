@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Smart Home</string>
+
     <string name="menu_place">Where am I?</string>
     <string name="menu_configure">Configurar</string>
 
