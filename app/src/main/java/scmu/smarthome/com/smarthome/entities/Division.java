@@ -1,6 +1,7 @@
 package scmu.smarthome.com.smarthome.entities;
 
 public class Division {
+    public String division;
     public String name;
     public Light light;
     public AirConditioner airconditioner;

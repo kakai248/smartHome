@@ -43,8 +43,7 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
                 StaggeredGridLayoutManager.VERTICAL));
 
         // Run AsyncTask
-        GetHomeStatusTask mHomeStatusTask = new GetHomeStatusTask(getActivity(),
-                DrawerFragment.this);
+        GetHomeStatusTask mHomeStatusTask = new GetHomeStatusTask(DrawerFragment.this);
         mHomeStatusTask.execute(selectedItem, showDivisions);
 
         return view;
@@ -56,19 +55,31 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
 
         if(showDivisions) {
             Division division = (Division) result;
-            adapter.addItem( new GridSwitch(getString(R.string.type_1), division.light.status) );
+
+            if(division.light != null)
+                adapter.addItem( new GridSwitch(selectedItem,
+                        getResources().getStringArray(R.array.json_devices_array)[0],
+                        getString(R.string.type_1), division.light.status) );
 
             if(division.airconditioner != null)
-                adapter.addItem( new GridSwitch(getString(R.string.type_2_single), division.airconditioner.status) );
+                adapter.addItem( new GridSwitch(selectedItem,
+                        getResources().getStringArray(R.array.json_devices_array)[1],
+                        getString(R.string.type_2_single), division.airconditioner.status) );
 
             if(division.tv != null)
-                adapter.addItem( new GridSeekbar(getString(R.string.type_3_single), division.tv.status, division.tv.volume) );
+                adapter.addItem( new GridSeekbar(selectedItem,
+                        getResources().getStringArray(R.array.json_devices_array)[2],
+                        getString(R.string.type_3_single), division.tv.status, division.tv.volume) );
 
             if(division.windows != null)
-                adapter.addItem( new GridSwitch(getString(R.string.type_4), division.windows.status) );
+                adapter.addItem( new GridSwitch(selectedItem,
+                        getResources().getStringArray(R.array.json_devices_array)[3],
+                        getString(R.string.type_4), division.windows.status) );
 
             if(division.soundsystem != null)
-                adapter.addItem( new GridSeekbar(getString(R.string.type_5), division.soundsystem.status, division.soundsystem.volume) );
+                adapter.addItem( new GridSeekbar(selectedItem,
+                        getResources().getStringArray(R.array.json_devices_array)[4],
+                        getString(R.string.type_5), division.soundsystem.status, division.soundsystem.volume) );
         }
         else {
             Division divisions[] = (Division[]) result;
@@ -76,24 +87,34 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
             for(Division division : divisions) {
 
                 if(division.light != null)
-                    adapter.addItem( new GridSwitch(getString(R.string.type_1) +
-                            " - " + division.name,division.light.status) );
+                    adapter.addItem( new GridSwitch(division.division,
+                            getResources().getStringArray(R.array.json_rooms_array)[0],
+                            getString(R.string.type_1) + " - " + division.name,
+                            division.light.status) );
 
                 if(division.airconditioner != null)
-                    adapter.addItem( new GridSwitch(getString(R.string.type_2_single) +
-                            " - " + division.name, division.airconditioner.status) );
+                    adapter.addItem( new GridSwitch(division.division,
+                            getResources().getStringArray(R.array.json_rooms_array)[1],
+                            getString(R.string.type_2_single) + " - " + division.name,
+                            division.airconditioner.status) );
 
                 if(division.tv != null)
-                    adapter.addItem( new GridSeekbar(getString(R.string.type_3_single) +
-                            " - " + division.name, division.tv.status, division.tv.volume) );
+                    adapter.addItem( new GridSeekbar(division.division,
+                            getResources().getStringArray(R.array.json_rooms_array)[2],
+                            getString(R.string.type_3_single) + " - " + division.name,
+                            division.tv.status, division.tv.volume) );
 
                 if(division.windows != null)
-                    adapter.addItem( new GridSwitch(getString(R.string.type_4) +
-                            " - " + division.name, division.windows.status) );
+                    adapter.addItem( new GridSwitch(division.division,
+                            getResources().getStringArray(R.array.json_rooms_array)[3],
+                            getString(R.string.type_4) + " - " + division.name,
+                            division.windows.status) );
 
                 if(division.soundsystem != null)
-                    adapter.addItem( new GridSeekbar(getString(R.string.type_5) +
-                            " - " + division.name, division.soundsystem.status, division.soundsystem.volume) );
+                    adapter.addItem( new GridSeekbar(division.division,
+                            getResources().getStringArray(R.array.json_rooms_array)[4],
+                            getString(R.string.type_5) + " - " + division.name,
+                            division.soundsystem.status, division.soundsystem.volume) );
             }
         }
 
@@ -101,10 +122,14 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
     }
 
     public class GridSwitch {
+        public String mRoom;
+        public String mDevice;
         public String mTitle;
         public boolean mStatus;
 
-        public GridSwitch(String title, boolean status) {
+        public GridSwitch(String room, String device, String title, boolean status) {
+            mRoom = room;
+            mDevice = device;
             mTitle = title;
             mStatus = status;
         }
@@ -113,8 +138,8 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
     public class GridSeekbar extends GridSwitch {
         public int mVolume;
 
-        public GridSeekbar(String title, boolean status, int volume) {
-            super(title, status);
+        public GridSeekbar(String room, String device, String title, boolean status, int volume) {
+            super(room, device, title, status);
             mVolume = volume;
         }
     }
