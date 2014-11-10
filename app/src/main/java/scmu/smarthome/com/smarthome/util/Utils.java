@@ -73,6 +73,15 @@ public class Utils {
                 " " + roomSelected, Toast.LENGTH_SHORT).show();
     }
 
+    public static void saveIp(Context context) {
+        String ip = ((EditText) ((Activity)context).findViewById(R.id.ip)).getText().toString();
+
+        // save new ip to sharedPreferences
+        Settings.saveIp(context, ip);
+
+        Toast.makeText(context, context.getString(R.string.configure_ip_saved) + " " + ip, Toast.LENGTH_SHORT).show();
+    }
+
     public static void showRoomInfo(Context context, int roomSelected) {
         String title = "";
 

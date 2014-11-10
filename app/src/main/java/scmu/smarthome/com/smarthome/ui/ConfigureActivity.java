@@ -34,11 +34,17 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
         findViewById(R.id.button_clear_local).setOnClickListener(this);
         findViewById(R.id.button_info).setOnClickListener(this);
         findViewById(R.id.button_find_place).setOnClickListener(this);
+        findViewById(R.id.button_save_ip).setOnClickListener(this);
 
         // if exist, set the dbmInterval value
         String dbmInterval = Settings.getDbmInterval(this);
         if(dbmInterval != null)
             ((EditText)findViewById(R.id.interval)).setText(dbmInterval);
+
+        // if exist, set the ip
+        String ip = Settings.getIp(this);
+        if(ip != null)
+            ((EditText)findViewById(R.id.ip)).setText(ip);
 
         // set rooms spinner
         Spinner spinner = (Spinner) findViewById(R.id.roomsSpinner);
@@ -121,6 +127,9 @@ public class ConfigureActivity extends Activity implements View.OnClickListener 
                break;
            case R.id.button_find_place :
                Utils.getPlace(this, list);
+               break;
+           case R.id.button_save_ip :
+               Utils.saveIp(this);
                break;
        }
     }

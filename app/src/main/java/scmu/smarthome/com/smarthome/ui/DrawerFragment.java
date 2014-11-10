@@ -43,7 +43,7 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
                 StaggeredGridLayoutManager.VERTICAL));
 
         // Run AsyncTask
-        GetHomeStatusTask mHomeStatusTask = new GetHomeStatusTask(DrawerFragment.this);
+        GetHomeStatusTask mHomeStatusTask = new GetHomeStatusTask(getActivity(), DrawerFragment.this);
         mHomeStatusTask.execute(selectedItem, showDivisions);
 
         return view;
