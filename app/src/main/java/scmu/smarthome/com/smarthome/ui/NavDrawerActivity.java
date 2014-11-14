@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
+
+import java.util.List;
 
 import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.adapters.DrawerAdapter;
@@ -38,6 +41,8 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
+
+        //displaySpeechRecognizer();
 
         showHouseDivisions = true;
 
@@ -79,6 +84,31 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
             fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
         }
     }
+
+    /*private static final int SPEECH_REQUEST_CODE = 0;
+
+    // Create an intent that can start the Speech Recognizer activity
+    private void displaySpeechRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+
+        // Start the activity, the intent will be populated with the speech text
+        startActivityForResult(intent, SPEECH_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(
+                    RecognizerIntent.EXTRA_RESULTS);
+
+            for(String i : results)
+                System.out.println("text: " + i);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }*/
 
     public void setupNavDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

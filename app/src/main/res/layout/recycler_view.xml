@@ -5,9 +5,5 @@
     android:layout_height="match_parent"
     android:columnWidth="90dp"
     android:gravity="center"
-    android:horizontalSpacing="10dp"
     android:numColumns="@integer/num_columns"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:stretchMode="columnWidth"
-    android:verticalSpacing="10dp" />
+    android:stretchMode="columnWidth" />

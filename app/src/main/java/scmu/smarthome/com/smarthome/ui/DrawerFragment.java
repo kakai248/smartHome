@@ -37,10 +37,16 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
 
         recyclerView = (RecyclerView) view.findViewById(R.id.gridview);
 
-        // set recyclerView StaggeredGridLayout manager
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(
                 getResources().getInteger(R.integer.num_columns),
-                StaggeredGridLayoutManager.VERTICAL));
+                StaggeredGridLayoutManager.VERTICAL);
+
+        // set items margins
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration();
+        recyclerView.addItemDecoration(itemDecoration);
+
+        // set recyclerView StaggeredGridLayout manager
+        recyclerView.setLayoutManager(layoutManager);
 
         // Run AsyncTask
         GetHomeStatusTask mHomeStatusTask = new GetHomeStatusTask(DrawerFragment.this);
