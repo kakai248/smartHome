@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import scmu.smarthome.com.smarthome.R;
 
 public class Settings {
+    private static final String DEFAULT_IP = "195.154.70.147:3000";
 
     private final static String DBM_INTERVAL = "scmu.smarthome.com.smarthome.dbminterval";
     private final static String ROOM0 = "scmu.smarthome.com.smarthome.room0";
@@ -15,6 +16,7 @@ public class Settings {
     private final static String ROOM3 = "scmu.smarthome.com.smarthome.room3";
     private final static String ROOM4 = "scmu.smarthome.com.smarthome.room4";
     private final static String ROOM5 = "scmu.smarthome.com.smarthome.room5";
+    private final static String IP = "scmu.smarthome.com.smarthome.ip";
 
     private static SharedPreferences get(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -74,5 +76,13 @@ public class Settings {
             default:
                 break;
         }
+    }
+
+    public static String getIp(Context context) {
+        return get(context).getString(IP, DEFAULT_IP);
+    }
+
+    public static void saveIp(Context context, String ip) {
+        edit(context).putString(IP, ip).commit();
     }
 }

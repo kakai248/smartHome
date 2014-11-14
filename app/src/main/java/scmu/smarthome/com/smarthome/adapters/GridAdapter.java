@@ -59,7 +59,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
                 String value = isChecked ? "true" : "false";
 
                 // Run AsyncTask
-                SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(GridAdapter.this);
+                SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(mContext, GridAdapter.this);
                 mHomeStatusTask.execute(mItems.get(position).mRoom, mItems.get(position).mDevice, "status", value);
             }
         });
@@ -84,7 +84,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
                     String value = "" + seekBar.getProgress();
 
                     // Run AsyncTask
-                    SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(GridAdapter.this);
+                    SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(mContext, GridAdapter.this);
                     mHomeStatusTask.execute(mItems.get(position).mRoom, mItems.get(position).mDevice, "volume", value);
                 }
             });

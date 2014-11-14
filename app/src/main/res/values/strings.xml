@@ -43,6 +43,8 @@
     <string name="configure_find_place_button">Onde estou?</string>
     <string name="configure_unknown_place">Local desconhecido</string>
     <string name="configure_current_local">Estamos no local:</string>
+    <string name="configure_ip">IP:</string>
+    <string name="configure_ip_saved">IP guardado:</string>
 
     <string-array name="rooms_array">
         <item>@string/room_1</item>

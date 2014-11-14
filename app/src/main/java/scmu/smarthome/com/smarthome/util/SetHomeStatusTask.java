@@ -1,5 +1,6 @@
 package scmu.smarthome.com.smarthome.util;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
@@ -18,9 +19,11 @@ public class SetHomeStatusTask extends AsyncTask<Object, Void, Object> {
         public void onHomeStatusTaskFinished(Object result);
     }
 
+    private Context mContext;
     private OnTaskFinishedListener mListener;
 
-    public SetHomeStatusTask(OnTaskFinishedListener listener) {
+    public SetHomeStatusTask(Context context, OnTaskFinishedListener listener) {
+        mContext = context;
         mListener = listener;
     }
 
@@ -31,10 +34,12 @@ public class SetHomeStatusTask extends AsyncTask<Object, Void, Object> {
         String type = (String) params[2];
         String status = (String) params[3];
 
-        final String URL = "http://195.154.70.147:3000/" + selectedItem +
-                                                     "/" + device +
-                                                     "/" + type +
-                                                     "/" + status;
+        String ip = Settings.getIp(mContext);
+
+        final String URL = "http://" + ip + "/" + selectedItem +
+                                            "/" + device +
+                                            "/" + type +
+                                            "/" + status;
 
         // make the HTTP request
         Request request = new Request.Builder()
