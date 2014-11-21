@@ -7,16 +7,13 @@ import android.preference.PreferenceManager;
 import scmu.smarthome.com.smarthome.R;
 
 public class Settings {
-    private static final String DEFAULT_IP = "195.154.70.147:3000";
-
-    private final static String DBM_INTERVAL = "scmu.smarthome.com.smarthome.dbminterval";
-    private final static String ROOM0 = "scmu.smarthome.com.smarthome.room0";
-    private final static String ROOM1 = "scmu.smarthome.com.smarthome.room1";
-    private final static String ROOM2 = "scmu.smarthome.com.smarthome.room2";
-    private final static String ROOM3 = "scmu.smarthome.com.smarthome.room3";
-    private final static String ROOM4 = "scmu.smarthome.com.smarthome.room4";
-    private final static String ROOM5 = "scmu.smarthome.com.smarthome.room5";
-    private final static String IP = "scmu.smarthome.com.smarthome.ip";
+    private final static String DBM_INTERVAL = "dbminterval";
+    private final static String ROOM0 = "room0";
+    private final static String ROOM1 = "room1";
+    private final static String ROOM2 = "room2";
+    private final static String ROOM3 = "room3";
+    private final static String ROOM4 = "room4";
+    private final static String ROOM5 = "room5";
 
     private static SharedPreferences get(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
@@ -26,8 +23,9 @@ public class Settings {
         return PreferenceManager.getDefaultSharedPreferences(context).edit();
     }
 
-    public static String getDbmInterval(Context context) {
-        return get(context).getString(DBM_INTERVAL, null);
+    public static int getDbmInterval(Context context) {
+        return Integer.parseInt(get(context).getString(DBM_INTERVAL,
+                context.getString(R.string.default_dbm_interval)));
     }
 
     public static void saveDbmInterval(Context context, String dbmInterval) {
@@ -79,10 +77,16 @@ public class Settings {
     }
 
     public static String getIp(Context context) {
-        return get(context).getString(IP, DEFAULT_IP);
+        return get(context).getString(context.getString(R.string.ip_key), context.getString(R.string.default_ip));
     }
 
-    public static void saveIp(Context context, String ip) {
-        edit(context).putString(IP, ip).commit();
+    public static boolean getAutoLocation(Context context) {
+        return get(context).getBoolean(context.getString(R.string.location_configure_auto_key), false);
     }
+
+    public static int getAutoLocationRefreshRate(Context context) {
+        return Integer.parseInt(get(context).getString(context.getString(R.string.location_configure_refresh_rate_key),
+                context.getString(R.string.default_refresh_rate)));
+    }
+
 }

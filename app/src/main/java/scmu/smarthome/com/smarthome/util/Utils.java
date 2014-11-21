@@ -73,15 +73,6 @@ public class Utils {
                 " " + roomSelected, Toast.LENGTH_SHORT).show();
     }
 
-    public static void saveIp(Context context) {
-        String ip = ((EditText) ((Activity)context).findViewById(R.id.ip)).getText().toString();
-
-        // save new ip to sharedPreferences
-        Settings.saveIp(context, ip);
-
-        Toast.makeText(context, context.getString(R.string.configure_ip_saved) + " " + ip, Toast.LENGTH_SHORT).show();
-    }
-
     public static void showRoomInfo(Context context, int roomSelected) {
         String title = "";
 
@@ -109,7 +100,7 @@ public class Utils {
 
     public static int getPlace(Context context, List<WifiHotSpot> list) {
         // obtain interval for the comparison
-        int interval = Integer.parseInt(Settings.getDbmInterval(context));
+        int interval = Settings.getDbmInterval(context);
 
         // for each room
         for(int room = 0; room <= 5; room++) {

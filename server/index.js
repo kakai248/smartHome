@@ -55,7 +55,7 @@ app.get('/:room/:device/:type/:status', function (req, res) {
 	res.json({ success : true });
 });
 
-var server = app.listen(3000, function () {
+var server = app.listen(3389, function () {
 	var host = server.address().address;
 	var port = server.address().port;
 

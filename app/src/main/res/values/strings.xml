@@ -3,7 +3,8 @@
 
     <string name="app_name">Smart Home</string>
 
-    <string name="menu_place">Where am I?</string>
+    <string name="menu_mic">Controlo de voz</string>
+    <string name="menu_place">Onde estou?</string>
     <string name="menu_configure">Configurar</string>
 
     <!-- Drawer Settings -->

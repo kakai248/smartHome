@@ -1,0 +1,38 @@
+<resources>
+    <string name="title_activity_settings">Definições</string>
+
+    <string name="default_ip">195.154.70.147:3389</string>
+    <string name="default_dbm_interval">10</string>
+    <string name="default_refresh_rate">30</string>
+
+    <string name="ip_key">ip</string>
+    <string name="location_configure_auto_key">location_configure_auto</string>
+    <string name="location_configure_refresh_rate_key">location_configure_refresh_rate</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">Geral</string>
+
+    <string name="pref_title_ip">IP</string>
+
+    <!-- Example settings for Location -->
+    <string name="pref_header_location">Localização</string>
+    <string name="pref_location_configure">Configurar localização</string>
+    <string name="pref_location_auto">Localizar automaticamente</string>
+    <string name="pref_location_refresh_rate">Tempo entre actualizações</string>
+
+    <string-array name="pref_location_refresh_rate_values">
+        <item>5 segundos</item>
+        <item>10 segundos</item>
+        <item>30 segundos</item>
+        <item>60 segundos</item>
+    </string-array>
+
+    <string-array name="pref_location_refresh_rate_entryvalues">
+        <item>5</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+</resources>

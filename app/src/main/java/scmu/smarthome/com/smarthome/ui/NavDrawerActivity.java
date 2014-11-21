@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.adapters.DrawerAdapter;
+import scmu.smarthome.com.smarthome.util.Settings;
 import scmu.smarthome.com.smarthome.util.Utils;
 
 public class NavDrawerActivity extends Activity implements AdapterView.OnItemClickListener {
@@ -37,14 +39,18 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     private ListView mDrawerList;
     private Switch switch1;
 
+    private Handler handler;
+    private Runnable run;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
 
-        //displaySpeechRecognizer();
-
         showHouseDivisions = true;
+
+        // initialize auto location handler
+        handler = new Handler();
 
         setupNavDrawer();
 
@@ -85,7 +91,45 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         }
     }
 
-    /*private static final int SPEECH_REQUEST_CODE = 0;
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // setup location auto refresher
+        setupLocationAutoRefresher();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if(run == null)
+            return;
+        handler.removeCallbacks(run);
+    }
+
+    private void setupLocationAutoRefresher() {
+        boolean autoLocation = Settings.getAutoLocation(this);
+
+        // refresh auto is off, we do nothing
+        if(!autoLocation)
+            return;
+
+        final int autoLocationRefreshRate = Settings.getAutoLocationRefreshRate(this);
+
+        // set timed updater
+        run = new Runnable() {
+            @Override
+            public void run() {
+                updateRoom();
+                handler.postDelayed(this, autoLocationRefreshRate * 1000);
+            }
+        };
+
+        handler.postDelayed(run, autoLocationRefreshRate * 1000);
+    }
+
+    private static final int SPEECH_REQUEST_CODE = 0;
 
     // Create an intent that can start the Speech Recognizer activity
     private void displaySpeechRecognizer() {
@@ -108,7 +152,7 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
                 System.out.println("text: " + i);
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }*/
+    }
 
     public void setupNavDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -242,24 +286,16 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         }
 
         switch (item.getItemId()) {
+            case R.id.mic :
+                displaySpeechRecognizer();
+                return true;
+
             case R.id.myPlace :
-                int place = Utils.getPlace(this, Utils.getWifiList(this));
-
-                if(place != -1) {
-
-                    if(switch1.isChecked())
-                        switch1.setChecked(false);
-
-                    mDrawerList.performItemClick(
-                            mDrawerList.getChildAt(place),
-                            place,
-                            mDrawerList.getAdapter().getItemId(place));
-                }
-
+                updateRoom();
                 return true;
 
             case R.id.configure :
-                startActivity(new Intent(this, ConfigureActivity.class));
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
             default :
@@ -273,6 +309,21 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_nav_drawer, menu);
         return true;
+    }
+
+    private void updateRoom() {
+        int place = Utils.getPlace(this, Utils.getWifiList(this));
+
+        if(place != -1) {
+
+            if(switch1.isChecked())
+                switch1.setChecked(false);
+
+            mDrawerList.performItemClick(
+                    mDrawerList.getChildAt(place),
+                    place,
+                    mDrawerList.getAdapter().getItemId(place));
+        }
     }
 
     public class DrawerItem {

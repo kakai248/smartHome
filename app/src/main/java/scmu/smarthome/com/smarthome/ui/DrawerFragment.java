@@ -57,6 +57,9 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
 
     @Override
     public void onHomeStatusTaskFinished(Object result) {
+        if(result == null)
+            return;
+
         GridAdapter adapter = new GridAdapter(getActivity());
 
         if(showDivisions) {

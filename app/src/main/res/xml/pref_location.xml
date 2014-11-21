@@ -1,0 +1,20 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="location_configure"
+        android:title="@string/pref_location_configure" />
+
+    <CheckBoxPreference
+        android:key="@string/location_configure_auto_key"
+        android:title="@string/pref_location_auto"
+        android:defaultValue="false" />
+
+    <ListPreference
+        android:dependency="@string/location_configure_auto_key"
+        android:key="@string/location_configure_refresh_rate_key"
+        android:title="@string/pref_location_refresh_rate"
+        android:defaultValue="@string/default_refresh_rate"
+        android:entries="@array/pref_location_refresh_rate_values"
+        android:entryValues="@array/pref_location_refresh_rate_entryvalues"/>
+
+</PreferenceScreen>

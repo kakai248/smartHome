@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="scmu.smarthome.com.smarthome" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
@@ -21,8 +21,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="scmu.smarthome.com.smarthome.ui.ConfigureActivity"
+            android:name="scmu.smarthome.com.smarthome.ui.LocationConfigureActivity"
             android:label="@string/title_activity_configure" >
+        </activity>
+        <activity
+            android:name="scmu.smarthome.com.smarthome.ui.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
     </application>
 
