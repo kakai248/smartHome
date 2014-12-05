@@ -35,6 +35,10 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
         notifyItemInserted(mItems.size()-1);
     }
 
+    public void clear() {
+        mItems.clear();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view;

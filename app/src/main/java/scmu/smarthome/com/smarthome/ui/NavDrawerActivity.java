@@ -39,8 +39,8 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     private ListView mDrawerList;
     private Switch switch1;
 
-    private Handler handler;
-    private Runnable run;
+    private Handler locationHandler;
+    private Runnable locationRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,8 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
 
         showHouseDivisions = true;
 
-        // initialize auto location handler
-        handler = new Handler();
+        // initialize location handler
+        locationHandler = new Handler();
 
         setupNavDrawer();
 
@@ -96,37 +96,37 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         super.onResume();
 
         // setup location auto refresher
-        setupLocationAutoRefresher();
+        setupLocationRefresher();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        if(run == null)
-            return;
-        handler.removeCallbacks(run);
+        // stop location auto refresher
+        if(locationRunnable != null)
+            locationHandler.removeCallbacks(locationRunnable);
     }
 
-    private void setupLocationAutoRefresher() {
-        boolean autoLocation = Settings.getAutoLocation(this);
+    private void setupLocationRefresher() {
+        boolean locationRefreshEnabled = Settings.getLocationRefreshEnabled(this);
 
         // refresh auto is off, we do nothing
-        if(!autoLocation)
+        if(!locationRefreshEnabled)
             return;
 
-        final int autoLocationRefreshRate = Settings.getAutoLocationRefreshRate(this);
+        final int locationRefreshRate = Settings.getLocationRefreshRate(this);
 
         // set timed updater
-        run = new Runnable() {
+        locationRunnable = new Runnable() {
             @Override
             public void run() {
                 updateRoom();
-                handler.postDelayed(this, autoLocationRefreshRate * 1000);
+                locationHandler.postDelayed(this, locationRefreshRate * 1000);
             }
         };
 
-        handler.postDelayed(run, autoLocationRefreshRate * 1000);
+        locationHandler.postDelayed(locationRunnable, locationRefreshRate * 1000);
     }
 
     private static final int SPEECH_REQUEST_CODE = 0;

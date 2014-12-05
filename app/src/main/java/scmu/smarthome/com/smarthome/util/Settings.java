@@ -80,13 +80,18 @@ public class Settings {
         return get(context).getString(context.getString(R.string.ip_key), context.getString(R.string.default_ip));
     }
 
-    public static boolean getAutoLocation(Context context) {
-        return get(context).getBoolean(context.getString(R.string.location_configure_auto_key), false);
+    public static boolean getLocationRefreshEnabled(Context context) {
+        return get(context).getBoolean(context.getString(R.string.location_configure_refresh_enabled_key), false);
     }
 
-    public static int getAutoLocationRefreshRate(Context context) {
+    public static int getLocationRefreshRate(Context context) {
         return Integer.parseInt(get(context).getString(context.getString(R.string.location_configure_refresh_rate_key),
-                context.getString(R.string.default_refresh_rate)));
+                context.getString(R.string.default_location_refresh_rate)));
+    }
+
+    public static int getFragmentRefreshRate(Context context) {
+        return Integer.parseInt(get(context).getString(context.getString(R.string.fragment_refresh_key),
+                context.getString(R.string.default_fragment_refresh_rate)));
     }
 
 }

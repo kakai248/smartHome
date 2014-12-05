@@ -36,13 +36,14 @@ public class SettingsActivity extends PreferenceActivity {
         getPreferenceScreen().addPreference(header);
         addPreferencesFromResource(R.xml.pref_general);
 
-        // Add 'notifications' preferences, and a corresponding header.
+        // Add 'location' preferences, and a corresponding header.
         header = new PreferenceCategory(this);
         header.setTitle(R.string.pref_header_location);
         getPreferenceScreen().addPreference(header);
         addPreferencesFromResource(R.xml.pref_location);
 
         bindPreferenceSummaryToValue(findPreference(getString(R.string.ip_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.fragment_refresh_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.location_configure_refresh_rate_key)));
 
         // set preference to launch activity

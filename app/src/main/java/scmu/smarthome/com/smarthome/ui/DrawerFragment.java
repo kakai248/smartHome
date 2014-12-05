@@ -2,6 +2,7 @@ package scmu.smarthome.com.smarthome.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -12,12 +13,17 @@ import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.adapters.GridAdapter;
 import scmu.smarthome.com.smarthome.entities.Division;
 import scmu.smarthome.com.smarthome.util.GetHomeStatusTask;
+import scmu.smarthome.com.smarthome.util.Settings;
 
 public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTaskFinishedListener {
 
     private RecyclerView recyclerView;
+    private GridAdapter adapter;
     private String selectedItem;
     private boolean showDivisions;
+
+    private Handler fragmentHandler;
+    private Runnable fragmentRunnable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,6 +32,9 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
         Bundle args = getArguments();
         selectedItem = args.getString("item_selected", "");
         showDivisions = args.getBoolean("show_divisions", false);
+
+        // initialize fragment refresher handler
+        fragmentHandler = new Handler();
 
         // Retain this fragment across configuration changes.
         setRetainInstance(true);
@@ -48,11 +57,50 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
         // set recyclerView StaggeredGridLayout manager
         recyclerView.setLayoutManager(layoutManager);
 
+        adapter = new GridAdapter(getActivity());
+        recyclerView.setAdapter(adapter);
+
+        getHomeStatus();
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // setup auto fragment refresher
+        setupFragmentRefresher();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // stop fragment auto refresher
+        if(fragmentRunnable != null)
+            fragmentHandler.removeCallbacks(fragmentRunnable);
+    }
+
+    public void getHomeStatus() {
         // Run AsyncTask
         GetHomeStatusTask mHomeStatusTask = new GetHomeStatusTask(getActivity(), DrawerFragment.this);
         mHomeStatusTask.execute(selectedItem, showDivisions);
+    }
 
-        return view;
+    private void setupFragmentRefresher() {
+        final int fragmentRefreshRate = Settings.getFragmentRefreshRate(getActivity());
+
+        // set timed updater
+        fragmentRunnable = new Runnable() {
+            @Override
+            public void run() {
+                getHomeStatus();
+                fragmentHandler.postDelayed(this, fragmentRefreshRate * 1000);
+            }
+        };
+
+        fragmentHandler.postDelayed(fragmentRunnable, fragmentRefreshRate * 1000);
     }
 
     @Override
@@ -60,7 +108,7 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
         if(result == null)
             return;
 
-        GridAdapter adapter = new GridAdapter(getActivity());
+        adapter.clear();
 
         if(showDivisions) {
             Division division = (Division) result;
@@ -127,7 +175,7 @@ public class DrawerFragment extends Fragment implements GetHomeStatusTask.OnTask
             }
         }
 
-        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public class GridSwitch {
