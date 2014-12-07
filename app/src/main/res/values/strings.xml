@@ -47,6 +47,19 @@
     <string name="configure_ip">IP:</string>
     <string name="configure_ip_saved">IP guardado:</string>
 
+    <string name="voice_light_on_room_1">ligar luz sala</string>
+    <string name="voice_light_off_room_1">desligar luz sala</string>
+    <string name="voice_light_on_room_2">ligar luz cozinha</string>
+    <string name="voice_light_off_room_2">desligar luz cozinha</string>
+    <string name="voice_light_on_room_3">ligar luz quarto 1</string>
+    <string name="voice_light_off_room_3">desligar luz quarto 1</string>
+    <string name="voice_light_on_room_4">ligar luz quarto 2</string>
+    <string name="voice_light_off_room_4">desligar luz quarto 2</string>
+    <string name="voice_light_on_room_5">ligar luz casa de banho</string>
+    <string name="voice_light_off_room_5">desligar luz casa de banho</string>
+    <string name="voice_light_on_room_6">ligar luz entrada</string>
+    <string name="voice_light_off_room_6">desligar luz entrada</string>
+
     <string-array name="rooms_array">
         <item>@string/room_1</item>
         <item>@string/room_2</item>

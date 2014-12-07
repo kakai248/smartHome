@@ -26,14 +26,21 @@ import java.util.List;
 
 import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.adapters.DrawerAdapter;
+import scmu.smarthome.com.smarthome.util.SetHomeStatusTask;
 import scmu.smarthome.com.smarthome.util.Settings;
 import scmu.smarthome.com.smarthome.util.Utils;
 
-public class NavDrawerActivity extends Activity implements AdapterView.OnItemClickListener {
+public class NavDrawerActivity extends Activity implements AdapterView.OnItemClickListener, SetHomeStatusTask.OnTaskFinishedListener {
+    private static final int SPEECH_REQUEST_CODE = 0;
+
+    private Fragment fragment;
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerAdapter drawerAdapter;
+
+    private boolean selectedHouseDivisions;
+    private int selectedItem;
 
     private boolean showHouseDivisions;
     private ListView mDrawerList;
@@ -65,7 +72,7 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         });
 
         FragmentManager fm = getFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.content_frame);
+        fragment = fm.findFragmentById(R.id.content_frame);
 
         // Sets default fragment (its supposed to be item 0 on list)
         if (fragment == null) {
@@ -129,41 +136,19 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         locationHandler.postDelayed(locationRunnable, locationRefreshRate * 1000);
     }
 
-    private static final int SPEECH_REQUEST_CODE = 0;
-
-    // Create an intent that can start the Speech Recognizer activity
-    private void displaySpeechRecognizer() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-
-        // Start the activity, the intent will be populated with the speech text
-        startActivityForResult(intent, SPEECH_REQUEST_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
-        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
-            List<String> results = data.getStringArrayListExtra(
-                    RecognizerIntent.EXTRA_RESULTS);
-
-            for(String i : results)
-                System.out.println("text: " + i);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     public void setupNavDrawer() {
+        selectedHouseDivisions = true;
+        selectedItem = 0;
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setFocusableInTouchMode(false);
+
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         // Setup menu adapter
         drawerAdapter = new DrawerAdapter(this);
         switchDrawerItemsList();
 
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(drawerAdapter);
         mDrawerList.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         mDrawerList.setItemChecked(0, true);
         mDrawerList.setOnItemClickListener(this);
@@ -192,6 +177,8 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
 
     private void switchDrawerItemsList() {
         drawerAdapter.clear();
+        drawerAdapter = new DrawerAdapter(this);
+        mDrawerList.setAdapter(drawerAdapter);
 
         if(showHouseDivisions) {
             drawerAdapter.add(new DrawerItem(getString(R.string.room_1)));
@@ -208,6 +195,9 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
             drawerAdapter.add(new DrawerItem(getString(R.string.type_4)));
             drawerAdapter.add(new DrawerItem(getString(R.string.type_5)));
         }
+
+        if(selectedHouseDivisions == showHouseDivisions)
+            mDrawerList.setItemChecked(selectedItem, true);
 
         drawerAdapter.notifyDataSetChanged();
     }
@@ -250,7 +240,7 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FragmentManager fm = getFragmentManager();
-        Fragment fragment = new DrawerFragment();
+        fragment = new DrawerFragment();
 
         Bundle args = new Bundle();
         if(showHouseDivisions) {
@@ -271,6 +261,10 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
 
         // Replace fragment and close drawer
         fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+        // update selected variables
+        selectedHouseDivisions = showHouseDivisions;
+        selectedItem = position;
 
         // If the device is bigger than 7', don't close the drawer
         if(! getResources().getBoolean(R.bool.drawer_opened))
@@ -311,6 +305,105 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         return true;
     }
 
+    // Create an intent that can start the Speech Recognizer activity
+    private void displaySpeechRecognizer() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+
+        // Start the activity, the intent will be populated with the speech text
+        startActivityForResult(intent, SPEECH_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK) {
+            List<String> results = data.getStringArrayListExtra(
+                    RecognizerIntent.EXTRA_RESULTS);
+
+            for(String i : results)
+                System.out.println("text: " + i);
+            processVoiceStrings(results);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void processVoiceStrings(List<String> strings) {
+        for(String s : strings) {
+            if(s.equalsIgnoreCase(getString(R.string.voice_light_on_room_1))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[0],
+                        getResources().getStringArray(R.array.json_devices_array)[0], true);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_off_room_1))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[0],
+                        getResources().getStringArray(R.array.json_devices_array)[0], false);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_on_room_2))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[1],
+                        getResources().getStringArray(R.array.json_devices_array)[0], true);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_off_room_2))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[1],
+                        getResources().getStringArray(R.array.json_devices_array)[0], false);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_on_room_3))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[2],
+                        getResources().getStringArray(R.array.json_devices_array)[0], true);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_off_room_3))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[2],
+                        getResources().getStringArray(R.array.json_devices_array)[0], false);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_on_room_4))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[3],
+                        getResources().getStringArray(R.array.json_devices_array)[0], true);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_off_room_4))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[3],
+                        getResources().getStringArray(R.array.json_devices_array)[0], false);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_on_room_5))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[4],
+                        getResources().getStringArray(R.array.json_devices_array)[0], true);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_off_room_5))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[4],
+                        getResources().getStringArray(R.array.json_devices_array)[0], false);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_on_room_6))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[5],
+                        getResources().getStringArray(R.array.json_devices_array)[0], true);
+                break;
+            }
+            else if(s.equalsIgnoreCase(getString(R.string.voice_light_off_room_6))) {
+                setHomeStatus(getResources().getStringArray(R.array.json_rooms_array)[5],
+                        getResources().getStringArray(R.array.json_devices_array)[0], false);
+                break;
+            }
+        }
+    }
+
+    private void setHomeStatus(String room, String device, boolean value) {
+        String v = value ? "true" : "false";
+
+        SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(this, this);
+        mHomeStatusTask.execute(room, device, "status", v);
+
+        // refreshes fragment
+        ((DrawerFragment)fragment).getHomeStatus();
+    }
+
     private void updateRoom() {
         int place = Utils.getPlace(this, Utils.getWifiList(this));
 
@@ -334,4 +427,8 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         }
     }
 
+    @Override
+    public void onHomeStatusTaskFinished(Object result) {
+
+    }
 }
