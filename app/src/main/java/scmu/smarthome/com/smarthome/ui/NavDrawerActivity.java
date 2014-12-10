@@ -1,6 +1,7 @@
 package scmu.smarthome.com.smarthome.ui;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -30,7 +31,7 @@ import scmu.smarthome.com.smarthome.util.SetHomeStatusTask;
 import scmu.smarthome.com.smarthome.util.Settings;
 import scmu.smarthome.com.smarthome.util.Utils;
 
-public class NavDrawerActivity extends Activity implements AdapterView.OnItemClickListener, SetHomeStatusTask.OnTaskFinishedListener {
+public class NavDrawerActivity extends Activity implements AdapterView.OnItemClickListener {
     private static final int SPEECH_REQUEST_CODE = 0;
 
     private Fragment fragment;
@@ -284,6 +285,11 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
                 displaySpeechRecognizer();
                 return true;
 
+            case R.id.overview :
+                DialogFragment newFragment = OverviewDialogFrament.newInstance();
+                newFragment.show(getFragmentManager().beginTransaction(), "dialog");
+                return true;
+
             case R.id.myPlace :
                 updateRoom();
                 return true;
@@ -397,7 +403,7 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     private void setHomeStatus(String room, String device, boolean value) {
         String v = value ? "true" : "false";
 
-        SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(this, this);
+        SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(this);
         mHomeStatusTask.execute(room, device, "status", v);
 
         // refreshes fragment
@@ -425,10 +431,5 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         public DrawerItem(String title) {
             mTitle = title;
         }
-    }
-
-    @Override
-    public void onHomeStatusTaskFinished(Object result) {
-
     }
 }

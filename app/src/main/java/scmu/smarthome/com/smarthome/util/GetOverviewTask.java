@@ -10,29 +10,28 @@ import com.squareup.okhttp.Request;
 
 import java.io.IOException;
 
-import scmu.smarthome.com.smarthome.entities.PostResponse;
+import scmu.smarthome.com.smarthome.entities.Division;
 
-public class SetHomeStatusTask extends AsyncTask<Object, Void, Object> {
+public class GetOverviewTask extends AsyncTask<Object, Void, Division[]> {
+
+    public interface OnTaskFinishedListener {
+
+        public void onOverviewTaskFinished(Division[] result);
+    }
 
     private Context mContext;
+    private OnTaskFinishedListener mListener;
 
-    public SetHomeStatusTask(Context context) {
+    public GetOverviewTask(Context context, OnTaskFinishedListener listener) {
         mContext = context;
+        mListener = listener;
     }
 
     @Override
-    protected Object doInBackground(Object... params) {
-        String selectedItem = (String) params[0];
-        String device = (String) params[1];
-        String type = (String) params[2];
-        String status = (String) params[3];
-
+    protected Division[] doInBackground(Object... params) {
         String ip = Settings.getIp(mContext);
 
-        final String URL = "http://" + ip + "/" + selectedItem +
-                                            "/" + device +
-                                            "/" + type +
-                                            "/" + status;
+        final String URL = "http://" + ip;
 
         // make the HTTP request
         Request request = new Request.Builder()
@@ -42,6 +41,7 @@ public class SetHomeStatusTask extends AsyncTask<Object, Void, Object> {
         String response;
         try {
             response = new OkHttpClient().newCall(request).execute().body().string();
+            System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -50,6 +50,15 @@ public class SetHomeStatusTask extends AsyncTask<Object, Void, Object> {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        return gson.fromJson(response, PostResponse.class);
+        return gson.fromJson(response, Division[].class);
+    }
+
+    @Override
+    protected void onPostExecute(Division[] result) {
+        super.onPostExecute(result);
+
+        if (mListener != null) {
+            mListener.onOverviewTaskFinished(result);
+        }
     }
 }

@@ -8,6 +8,13 @@
     </item>
 
     <item
+        android:id="@+id/overview"
+        android:icon="@drawable/ic_action_document"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_overview">
+    </item>
+
+    <item
         android:id="@+id/myPlace"
         android:icon="@drawable/ic_action_place"
         android:showAsAction="ifRoom"

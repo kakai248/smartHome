@@ -17,7 +17,7 @@ import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.ui.DrawerFragment;
 import scmu.smarthome.com.smarthome.util.SetHomeStatusTask;
 
-public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> implements SetHomeStatusTask.OnTaskFinishedListener {
+public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     private static final int VIEW_TYPE_SWITCH = 0;
     private static final int VIEW_TYPE_SEEKBAR = 1;
 
@@ -63,7 +63,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
                 String value = isChecked ? "true" : "false";
 
                 // Run AsyncTask
-                SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(mContext, GridAdapter.this);
+                SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(mContext);
                 mHomeStatusTask.execute(mItems.get(position).mRoom, mItems.get(position).mDevice, "status", value);
             }
         });
@@ -88,7 +88,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
                     String value = "" + seekBar.getProgress();
 
                     // Run AsyncTask
-                    SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(mContext, GridAdapter.this);
+                    SetHomeStatusTask mHomeStatusTask = new SetHomeStatusTask(mContext);
                     mHomeStatusTask.execute(mItems.get(position).mRoom, mItems.get(position).mDevice, "volume", value);
                 }
             });
@@ -106,11 +106,6 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> im
     @Override
     public int getItemCount() {
         return mItems.size();
-    }
-
-    @Override
-    public void onHomeStatusTaskFinished(Object result) {
-
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
