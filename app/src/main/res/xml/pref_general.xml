@@ -12,7 +12,7 @@
 
     <EditTextPreference
         android:key="@string/fragment_refresh_key"
-        android:title="@string/pref_title_ip"
+        android:title="@string/pref_title_fragment_refresh"
         android:defaultValue="@string/default_fragment_refresh_rate"
         android:selectAllOnFocus="true"
         android:inputType="number"
