@@ -115,18 +115,12 @@ var server = app.listen(3389, function () {
 		// tick
 		date = (date+2) % 6;
 
-		if(date == 0) {
+		if(date == 0)
 			handleMorning();
-			console.log("morning");
-		}
-		else if(date == 2) {
+		else if(date == 2)
 			handleAfternoon();
-			console.log("afternoon");
-		}
-		else if(date == 4) {
+		else if(date == 4)
 			handleNight();
-			console.log("night");
-		}
 
 	}, 120000);
 
@@ -162,9 +156,7 @@ var server = app.listen(3389, function () {
 		var sender = new gcm.Sender('######');
 		var registrationIds = ['??????'];
 
-		sender.send(message, registrationIds, 3, function (err, result) {
-		    console.log(result);
-		});
+		sender.send(message, registrationIds, 3, function (err, result) {});
 	}
 });
 

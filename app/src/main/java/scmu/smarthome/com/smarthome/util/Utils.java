@@ -22,9 +22,7 @@ import scmu.smarthome.com.smarthome.entities.WifiHotSpot;
 
 public class Utils {
 
-    /**
-     * Registers the application with GCM servers asynchronously.
-     */
+    // Registers the application with GCM servers asynchronously
     public static void registerAppInBackground(final Context context) {
 
         new AsyncTask<Void, Void, Void>() {
@@ -35,9 +33,8 @@ public class Utils {
 
                 try {
                     String registrationId = gcm.register("####");
-                    System.out.println("Device registered, registration ID=" + registrationId);
 
-                    // Persist the regID - no need to register again.
+                    // Persist the registrationId, no need to register again
                     Settings.saveRegistrationId(context, registrationId);
                 } catch (IOException ex) {
                     ex.printStackTrace();

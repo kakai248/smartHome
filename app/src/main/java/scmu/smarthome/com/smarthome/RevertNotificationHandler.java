@@ -17,8 +17,6 @@ public class RevertNotificationHandler extends Activity {
         String revertMessage = extras.getString("revertMessage");
         int notificationId = extras.getInt("notificationId");
 
-        System.out.println("revert message: " + revertMessage + " ! " + notificationId);
-
         // Dismiss notification
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.cancel(notificationId);

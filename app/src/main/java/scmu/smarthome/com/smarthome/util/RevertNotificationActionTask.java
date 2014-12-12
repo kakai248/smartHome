@@ -14,17 +14,10 @@ import scmu.smarthome.com.smarthome.entities.Division;
 
 public class RevertNotificationActionTask extends AsyncTask<String, Void, Void> {
 
-    public interface OnTaskFinishedListener {
-
-        public void onHomeStatusTaskFinished(Object result);
-    }
-
     private Context mContext;
-    private OnTaskFinishedListener mListener;
 
     public RevertNotificationActionTask(Context context) {
         mContext = context;
-        //mListener = listener;
     }
 
     @Override
@@ -41,22 +34,11 @@ public class RevertNotificationActionTask extends AsyncTask<String, Void, Void> 
                 .build();
 
         try {
-            String response = new OkHttpClient().newCall(request).execute().body().string();
-
-            System.out.println("done! response:: " + response);
+            new OkHttpClient().newCall(request).execute().body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(Void result) {
-        super.onPostExecute(result);
-
-        if (mListener != null) {
-            mListener.onHomeStatusTaskFinished(result);
-        }
     }
 }

@@ -60,8 +60,6 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
         setContentView(R.layout.activity_nav_drawer);
 
         String registrationId = Settings.getRegistrationId(this);
-        System.out.println("reg id: " + registrationId);
-
         if(registrationId == null)
             Utils.registerAppInBackground(this);
 
