@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
@@ -23,6 +24,9 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import java.io.IOException;
 import java.util.List;
 
 import scmu.smarthome.com.smarthome.R;
@@ -54,6 +58,12 @@ public class NavDrawerActivity extends Activity implements AdapterView.OnItemCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
+
+        String registrationId = Settings.getRegistrationId(this);
+        System.out.println("reg id: " + registrationId);
+
+        if(registrationId == null)
+            Utils.registerAppInBackground(this);
 
         showHouseDivisions = true;
 

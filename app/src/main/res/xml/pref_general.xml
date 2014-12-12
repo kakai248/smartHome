@@ -20,4 +20,9 @@
         android:singleLine="true"
         android:maxLines="1" />
 
+    <CheckBoxPreference
+        android:key="@string/notifications_enabled_key"
+        android:title="@string/notifications_enabled_title"
+        android:defaultValue="true" />
+
 </PreferenceScreen>

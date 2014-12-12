@@ -1,6 +1,14 @@
 var dataset = require('./dataset.js');
 var express = require('express');
 var app = express();
+var gcm = require('node-gcm');
+
+var NOTIFICATION_MORNING = "morning";
+var NOTIFICATION_MORNING_MESSAGE = "Opening windows and turning off lights..";
+var NOTIFICATION_AFTERNOON = "afternoon";
+var NOTIFICATION_AFTERNOON_MESSAGE = "Turning on air conditioner..";
+var NOTIFICATION_NIGHT = "night";
+var NOTIFICATION_NIGHT_MESSAGE = "Closing windows, turning off air conditioner and turning on lights..";
 
 // overview
 app.get('/', function (req, res) {
@@ -75,6 +83,21 @@ app.get('/:room/:device/:type/:status', function (req, res) {
 	res.json({ success : true });
 });
 
+// revery notification action
+app.get('/revert/:action', function (req, res) {
+	var action = req.params.action;
+
+	if(action === "morning")
+		handleMorningAction(true);
+	else if(action === "afternoon")
+		handleAfternoonAction(true);
+	else
+		handleNightAction(true);
+
+	res.json({ success : true });
+});
+
+
 var server = app.listen(3389, function () {
 	var host = server.address().address;
 	var port = server.address().port;
@@ -108,44 +131,87 @@ var server = app.listen(3389, function () {
 	}, 120000);
 
 	function handleMorning() {
-		// open all windows
-		dataset['divisions']['livingroom']['windows']['status'] = true;
-		dataset['divisions']['kitchen']['windows']['status'] = true;
-		dataset['divisions']['room2']['windows']['status'] = true;
-		dataset['divisions']['bathroom']['windows']['status'] = true;
-		dataset['divisions']['hall']['windows']['status'] = true;
+		handleMorningAction(false);
 
-		// turn off living room lights
-		dataset['divisions']['livingroom']['light']['status'] = false;
-		dataset['divisions']['hall']['light']['status'] = false;
+		// send notification
+		sendNotification(NOTIFICATION_MORNING, NOTIFICATION_MORNING_MESSAGE);
 	}
 
 	function handleAfternoon() {
-		// turn on air conditioner
-		dataset['divisions']['livingroom']['airconditioner']['status'] = true;
-		dataset['divisions']['kitchen']['airconditioner']['status'] = true;
-		dataset['divisions']['room1']['airconditioner']['status'] = true;
-		dataset['divisions']['room2']['airconditioner']['status'] = true;
-		dataset['divisions']['hall']['airconditioner']['status'] = true;
+		handleAfternoonAction(false);
+
+		// send notification
+		sendNotification(NOTIFICATION_AFTERNOON, NOTIFICATION_AFTERNOON_MESSAGE);
 	}
 
 	function handleNight() {
-		// close all windows
-		dataset['divisions']['livingroom']['windows']['status'] = false;
-		dataset['divisions']['kitchen']['windows']['status'] = false;
-		dataset['divisions']['room2']['windows']['status'] = false;
-		dataset['divisions']['bathroom']['windows']['status'] = false;
-		dataset['divisions']['hall']['windows']['status'] = false;
+		handleNightAction(false);
 
-		// turn on lights
-		dataset['divisions']['livingroom']['light']['status'] = true;
-		dataset['divisions']['hall']['light']['status'] = true;
+		// send notification
+		sendNotification(NOTIFICATION_NIGHT, NOTIFICATION_NIGHT_MESSAGE);
+	}
 
-		// turn off air conditioner
-		dataset['divisions']['livingroom']['airconditioner']['status'] = false;
-		dataset['divisions']['kitchen']['airconditioner']['status'] = false;
-		dataset['divisions']['room1']['airconditioner']['status'] = false;
-		dataset['divisions']['room2']['airconditioner']['status'] = false;
-		dataset['divisions']['hall']['airconditioner']['status'] = false;
+	function sendNotification(revertMessage, messageText) {
+		var message = new gcm.Message({
+		    data: {
+		    	revertMessage : revertMessage,
+		        message: messageText
+		    }
+		});
+
+		var sender = new gcm.Sender('######');
+		var registrationIds = ['??????'];
+
+		sender.send(message, registrationIds, 3, function (err, result) {
+		    console.log(result);
+		});
 	}
 });
+
+// if revert is true, we want to revert the
+// default morning action
+function handleMorningAction(revert) {
+	// handle windows
+	dataset['divisions']['livingroom']['windows']['status'] = !revert;
+	dataset['divisions']['kitchen']['windows']['status'] = !revert;
+	dataset['divisions']['room2']['windows']['status'] = !revert;
+	dataset['divisions']['bathroom']['windows']['status'] = !revert;
+	dataset['divisions']['hall']['windows']['status'] = !revert;
+
+	// handle lights
+	dataset['divisions']['livingroom']['light']['status'] = revert;
+	dataset['divisions']['hall']['light']['status'] = revert;
+}
+
+// if revert is true, we want to revert the
+// default afternoon action
+function handleAfternoonAction(revert) {
+	// handle air conditioners
+	dataset['divisions']['livingroom']['airconditioner']['status'] = !revert;
+	dataset['divisions']['kitchen']['airconditioner']['status'] = !revert;
+	dataset['divisions']['room1']['airconditioner']['status'] = !revert;
+	dataset['divisions']['room2']['airconditioner']['status'] = !revert;
+	dataset['divisions']['hall']['airconditioner']['status'] = !revert;
+}
+
+// if revert is true, we want to revert the
+// default night action
+function handleNightAction(revert) {
+	// handle windows
+	dataset['divisions']['livingroom']['windows']['status'] = revert;
+	dataset['divisions']['kitchen']['windows']['status'] = revert;
+	dataset['divisions']['room2']['windows']['status'] = revert;
+	dataset['divisions']['bathroom']['windows']['status'] = revert;
+	dataset['divisions']['hall']['windows']['status'] = revert;
+
+	// handle lights
+	dataset['divisions']['livingroom']['light']['status'] = !revert;
+	dataset['divisions']['hall']['light']['status'] = !revert;
+
+	// handle air conditioners
+	dataset['divisions']['livingroom']['airconditioner']['status'] = revert;
+	dataset['divisions']['kitchen']['airconditioner']['status'] = revert;
+	dataset['divisions']['room1']['airconditioner']['status'] = revert;
+	dataset['divisions']['room2']['airconditioner']['status'] = revert;
+	dataset['divisions']['hall']['airconditioner']['status'] = revert;
+}

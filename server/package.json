@@ -4,7 +4,8 @@
 	"description": "trabalho SCMU",
 	"main": "index.js",
 	"dependencies": {
-		"express": "^4.10.1"
+		"express": "^4.10.1",
+		"node-gcm": "0.9.12"
 	},
 	"repository": {
 		"type": "git",

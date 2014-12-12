@@ -5,9 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +21,34 @@ import scmu.smarthome.com.smarthome.R;
 import scmu.smarthome.com.smarthome.entities.WifiHotSpot;
 
 public class Utils {
+
+    /**
+     * Registers the application with GCM servers asynchronously.
+     */
+    public static void registerAppInBackground(final Context context) {
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+
+                try {
+                    String registrationId = gcm.register("####");
+                    System.out.println("Device registered, registration ID=" + registrationId);
+
+                    // Persist the regID - no need to register again.
+                    Settings.saveRegistrationId(context, registrationId);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+                return null;
+            }
+
+        }.execute(null, null, null);
+
+    }
 
     public static List<WifiHotSpot> getWifiList(Context context) {
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);

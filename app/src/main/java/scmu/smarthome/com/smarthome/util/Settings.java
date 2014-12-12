@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import scmu.smarthome.com.smarthome.R;
 
 public class Settings {
+    private final static String REGISTRATION_ID = "registrationId";
     private final static String DBM_INTERVAL = "dbminterval";
     private final static String ROOM0 = "room0";
     private final static String ROOM1 = "room1";
@@ -21,6 +22,14 @@ public class Settings {
 
     private static SharedPreferences.Editor edit(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).edit();
+    }
+
+    public static String getRegistrationId(Context context) {
+        return get(context).getString(REGISTRATION_ID, null);
+    }
+
+    public static void saveRegistrationId(Context context, String registrationId) {
+        edit(context).putString(REGISTRATION_ID, registrationId).commit();
     }
 
     public static int getDbmInterval(Context context) {
@@ -92,6 +101,10 @@ public class Settings {
     public static int getFragmentRefreshRate(Context context) {
         return Integer.parseInt(get(context).getString(context.getString(R.string.fragment_refresh_key),
                 context.getString(R.string.default_fragment_refresh_rate)));
+    }
+
+    public static boolean isNotificationsEnabled(Context context) {
+        return get(context).getBoolean(context.getString(R.string.notifications_enabled_key), false);
     }
 
 }
