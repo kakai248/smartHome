@@ -13,7 +13,7 @@ The app is adjust to smartphones and 7' tablets.
 
 Here are a few screenshots:
 
-![Screenshots](https://photos-5.dropbox.com/t/2/AACrVfCZ9-QHi46oxC8VBZEEkJYp-kuEdGqi1hMF1LiHMw/12/13427446/png/1024x768/3/1419616800/0/2/github-screenshot.png/CPbFswYgASgBKAIoAw/Wupz2HqOgOFd3OlZFwsKHebSLaameW_FMaLg-oJW4ZE)
+![Screenshots](https://drive.google.com/uc?id=0B1tnx50O2XkNcC1uNEltRUFKTTg)
 
 ### server
 This contains all the back-end related code.
